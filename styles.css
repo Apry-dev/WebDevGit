@@ -1,0 +1,331 @@
+/* ---------------------------
+   Cleaned user CSS + additions
+   --------------------------- */
+
+/* small correction: head -> header: <head> styles aren't visible on page */
+header{
+    background-color:#F2E3CE;
+}
+
+/* animation kept from user */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+.fading-text{
+    opacity: 0;
+    display: inline-block;
+}
+
+/* page background */
+body{
+    background-color: #f6e1c3 ;
+    padding-left: 1.5%;
+    padding-right: 1.5%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    line-height: 1.35;
+    color: #111;
+}
+
+/* flyIn animation */
+@keyframes flyIn {
+    from {
+        transform: translateX(100vw);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* small fixes: use valid hex for colours */
+.file-age {
+    font-size: 14px;
+    font-weight: bold;
+    color: #905D5D;
+    margin-bottom: 10px;
+    display: block;
+    text-align: left;
+}
+
+/* header text */
+.header-fly {
+    position: relative;
+    opacity: 0;
+    animation: flyIn 0.8s ease-out forwards;
+    color: #905D5D;
+    font-weight: 700;
+    font-size: 24px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+.heading1 {
+    color: #905D5D;
+    font-weight: 700;
+    font-size: 24px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.heading2 {
+    color: navy;
+    border-bottom: 2px solid transparent;
+    border-radius: 2px;
+    display: inline-block;
+}
+
+/* content card */
+.content {
+    background-color: #C4B39b;
+    border: 2px solid #DFCDB1;
+    border-radius: 4px;
+    color: #231814; /* fixed to hex */
+}
+
+/* thick strike (keeps user intent) */
+.thick-strike {
+    text-decoration: line-through;
+    text-decoration-thickness: 1.5px;
+    text-decoration-color: rgb(0, 0, 0);
+}
+
+/* revert style */
+.exception {
+    all: revert;
+}
+
+/* list items styling */
+li{
+    background-color: #C4B39B;
+    border: 2px solid #DFCDB1;
+    border-radius: 4px;
+    color: #231814; /* fixed to hex */
+    padding: 6px;
+    margin-bottom: 6px;
+}
+
+/* HR style */
+hr{
+    border: none;
+    height: 3px;
+    background-color:#905D5D;
+}
+
+/* code block corrections */
+code {
+    background-color: rgb(68, 89, 103);
+    color: rgb(54,69,79);
+    border-width: 1px;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+/* link style (kept) */
+a{
+    color: rgb(235, 97, 166);
+    font-weight: 600;
+    text-decoration: underline;
+}
+a:hover{
+    color: rgb(173, 45, 100);
+    font-style: oblique;
+    background-color: #d7c5ac;
+}
+
+/* remove invalid 's size' and use meaningful small style */
+s{
+    font-size: 0.88em;
+}
+
+/* pre */
+pre {
+    display: block;
+    width: fit-content;
+    text-align: center;
+    padding: 5%;
+    font-size: 14px;
+    font-weight: 900;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform-origin: left;
+}
+pre:hover {
+    color: #ae7f7f;
+    background-color: orangered;
+    transform: scaleX(1.3);
+    border-radius: 10px;
+}
+
+/* textarea */
+textarea{
+    background-color: #cbb9a0;
+    border-color: #8c7d69;
+}
+
+/* sub */
+sub {
+    color: #141414;
+    font-weight: 600;
+    border-left: 1px solid #141414;
+    padding-left: 2px;
+}
+
+/* footer */
+.footer{
+    border-top-color: #905D5D;
+    border-top-width: 3px;
+    border-top-style: solid;
+    padding-top: 12px;
+    margin-top: 20px;
+}
+
+/* fancy footer tag */
+.footerTag{
+    padding-left: 40%;
+    padding-right: 40%;
+    background: linear-gradient(90deg, orange 16%, red 34%, green 46%, blue 62%, indigo 78%, violet 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    font-weight: bold;
+    display: inline-block;
+}
+
+/* small helpers */
+.muted { color: #444; font-size: 0.95rem; }
+.small { font-size: 0.95rem; }
+.bold { font-weight: 600; }
+.preserve { white-space: pre-wrap; font-family: inherit; font-size: 0.95rem; }
+
+/* layout helpers */
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+/* make sections scroll-friendly with sticky nav */
+section {
+    margin-bottom: 12px;
+    scroll-margin-top: 90px; /* keeps heading visible under sticky nav */
+}
+
+/* -------------------------
+   TASKBAR / NAV styles
+   ------------------------- */
+html { scroll-behavior: smooth; }
+
+.taskbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    background-color: #C4B39b;
+    border: 2px solid #DFCDB1;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    position: sticky;
+    top: 12px;
+    z-index: 999;
+    margin-bottom: 16px;
+}
+
+.taskbar-links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.taskbar a {
+    padding: 6px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #231814;
+    font-weight: 600;
+    background: transparent;
+}
+
+.taskbar a:hover,
+.taskbar a:focus {
+    background: #d7c5ac;
+    color: #905D5D;
+    text-decoration: underline;
+    outline: none;
+}
+
+.taskbar a.active {
+    background: #905D5D;
+    color: #fff;
+    box-shadow: inset 0 -3px rgba(0,0,0,0.06);
+}
+
+.taskbar-toggle {
+    display: none;
+    background: transparent;
+    border: 1px solid #905D5D;
+    color: #905D5D;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+
+/* mobile behaviour */
+@media (max-width: 700px) {
+    .taskbar-links { display: none; width: 100%; flex-direction: column; }
+    .taskbar.open .taskbar-links { display: flex; }
+    .taskbar-toggle { display: inline-flex; }
+}
+
+/* small viewport adjustments */
+@media (max-width:600px) {
+    .two-col { grid-template-columns: 1fr; }
+    header { flex-direction: column; align-items: flex-start; gap: 12px; }
+}
+
+.footer {
+  border-top-color: #905D5D;
+  border-top-width: 3px;
+  border-top-style: solid;
+  padding-top: 20px;
+  margin-top: 40px;
+  text-align: center;
+  background-color: #F2E3CE;
+  border-radius: 8px 8px 0 0;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: #905D5D;
+  font-weight: 600;
+  text-decoration: none;
+  border: 2px solid #DFCDB1;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.footer-links a:hover {
+  background-color: #905D5D;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.footerTag {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 1.1rem;
+  background: linear-gradient(90deg, 
+    orange 16%, red 34%, green 46%, blue 62%, indigo 78%, violet 100%);
+  background-clip: text;
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent; 
+}

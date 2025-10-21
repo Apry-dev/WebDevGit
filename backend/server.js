@@ -1,31 +1,58 @@
-import express from "express";
-import mysql from "mysql2";
-import dotenv from "dotenv";
-
-dotenv.config(); // load .env variables
+const express = require("express");
+const db = require("./utils/db");
+require("dotenv").config();
 
 const app = express();
 
-// Create MySQL connection
-const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Test database connection
+async function testConnection() {
+    try {
+        await db.execute('SELECT 1');
+        console.log("✅ Connected to MySQL database!");
+    } catch (error) {
+        console.error("❌ Database connection failed:", error.message);
+        console.log("💡 Make sure to run 'npm run init-db' first");
+    }
+}
+
+// Test connection on startup
+testConnection();
+
+// Routes
+app.get("/", (req, res) => {
+    res.json({
+        message: "TraditionConnect backend is running!",
+        status: "success",
+        timestamp: new Date().toISOString()
+    });
 });
 
-db.connect((err) => {
-    if (err) {
-    console.error("Database connection failed:", err);
-    } else {
-    console.log("Connected to MySQL database!");
+// Health check endpoint
+app.get("/health", async (req, res) => {
+    try {
+        await db.execute('SELECT 1');
+        res.json({
+            status: "healthy",
+            database: "connected",
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: "unhealthy",
+            database: "disconnected",
+            error: error.message,
+            timestamp: new Date().toISOString()
+        });
     }
 });
 
-app.get("/", (req, res) => {
-    res.send("TraditionConnect backend is running!");
-});
+const PORT = process.env.PORT || 3000;
 
-app.listen(process.env.PORT, () => {
-    console.log(`Server running on port ${process.env.PORT}`);
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📊 Health check: http://localhost:${PORT}/health`);
 });

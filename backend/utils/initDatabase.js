@@ -14,7 +14,7 @@ class DatabaseInitializer {
             this.connection = mysql.createConnection({
                 host: process.env.DB_HOST || 'localhost',
                 user: process.env.DB_USER || 'root',
-                password: process.env.DB_PASSWORD || '',
+                password: process.env.DB_PASSWORD || 'Andrewc817!',
                 port: process.env.DB_PORT || 3306,
                 multipleStatements: true
             });
@@ -57,7 +57,8 @@ class DatabaseInitializer {
 
     async runSchemaFile(filePath) {
         try {
-            const schemaPath = path.join(__dirname, 'database', filePath);
+            const projectRoot = path.join(__dirname, '..', '..');
+            const schemaPath = path.join(projectRoot, 'database', filePath);
             
             if (!fs.existsSync(schemaPath)) {
                 console.log(`Schema file ${filePath} not found`);

@@ -7,9 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "setup-db": "node setup-db.js",
-    "test-db": "node test-db.js",
+    "init-db": "node backend/utils/initDatabase.js",
     "start": "node backend/server.js"
   },
   "repository": {

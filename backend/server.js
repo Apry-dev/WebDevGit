@@ -22,6 +22,14 @@ async function testConnection() {
 // Test connection on startup
 testConnection();
 
+// Utility function to measure execution time of a DB query
+async function measureDbExecTime(query) {
+    const start = Date.now();
+    const result = await db.execute(query);
+    const execTime = (Date.now() - start).toFixed(3); // ms, 3 significant digits
+    return { result, execTime };
+}
+
 // Routes
 app.get("/", (req, res) => {
     res.json({
@@ -34,11 +42,12 @@ app.get("/", (req, res) => {
 // Health check endpoint
 app.get("/health", async (req, res) => {
     try {
-        await db.execute('SELECT 1');
+        const { execTime } = await measureDbExecTime('SELECT 1');
         res.json({
             status: "healthy",
             database: "connected",
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            execTime: execTime // in milliseconds
         });
     } catch (error) {
         res.status(500).json({
@@ -47,6 +56,38 @@ app.get("/health", async (req, res) => {
             error: error.message,
             timestamp: new Date().toISOString()
         });
+    }
+});
+
+app.get("/artisans", async (req, res) => {
+    try {
+        const { result, execTime } = await measureDbExecTime('SELECT * FROM artisans');
+        const [rows] = result;
+        res.json({
+            status: "success",
+            users: rows,
+            timestamp: new Date().toISOString(),
+            location: "backend/server.js:get(/artisans)",
+            execTime: execTime
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.get("/products", async (req, res) => {
+    try {
+        const { result, execTime } = await measureDbExecTime('SELECT * FROM products');
+        const [rows] = result;
+        res.json({
+            status: "success",
+            products: rows,
+            timestamp: new Date().toISOString(),
+            location: "backend/server.js:get(/products)",
+            execTime: execTime
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
 

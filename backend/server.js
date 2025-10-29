@@ -1,9 +1,22 @@
+<<<<<<< HEAD
 const express = require("express");
 const db = require("./utils/db");
 require("dotenv").config();
+=======
+// ✅ server.js - servește pagina principală (index.html)
+
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+import dotenv from "dotenv";
+
+dotenv.config();
+>>>>>>> a455b12 (Serve frontend via Node.js and fix static file paths)
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
+<<<<<<< HEAD
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -96,4 +109,21 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
     console.log(`📊 Health check: http://localhost:${PORT}/health`);
+=======
+// 🔹 Necesare pentru a folosi __dirname în module ES
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// 🔹 Servește toate fișierele statice (HTML, CSS, JS, imagini)
+app.use(express.static(path.join(__dirname, "../frontend/public")));
+
+// 🔹 Când accesezi http://localhost:3000 → trimite index.html
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/public/index.html"));
+});
+
+// 🔹 Pornim serverul
+app.listen(PORT, () => {
+  console.log(`✅ Server running at http://localhost:${PORT}`);
+>>>>>>> a455b12 (Serve frontend via Node.js and fix static file paths)
 });

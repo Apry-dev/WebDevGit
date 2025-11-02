@@ -5,12 +5,21 @@
   box-sizing: border-box;
 }
 
-body {
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: linear-gradient(180deg, #faf8f4 0%, #f4f1e8 100%);
   font-family: 'Inter', sans-serif;
   color: #111;
-  background-color: #fff;
   line-height: 1.6;
 }
+
+/* Un shadow discret în loc de borduri vizibile */
+body {
+  box-shadow: inset 0 0 0 10px rgba(160, 160, 160, 0.05);
+}
+
 
 /* -------- NAVBAR -------- */
 .navbar {
@@ -63,6 +72,89 @@ body {
 .login-btn:hover {
   background-color: #445024;
 }
+
+/* 🔹 INTRO STORY SECTION */
+.intro-story {
+  background-color: #f9f7f3;
+  padding: 6rem 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  border-bottom: 1px solid #e0ded8;
+}
+
+.intro-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  flex-wrap: wrap;
+  max-width: 1200px;
+}
+
+.intro-text {
+  flex: 1;
+  max-width: 550px;
+}
+
+.intro-text h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 2.4rem;
+  color: #2e2e2e;
+  margin-bottom: 1rem;
+}
+
+.intro-text p {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.learn-more-btn {
+  background-color: #5a6632;
+  color: #fff;
+  padding: 0.8rem 1.8rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.learn-more-btn:hover {
+  background-color: #445024;
+}
+
+.intro-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.intro-image img {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* 🔹 Responsive for mobile */
+@media (max-width: 768px) {
+  .intro-content {
+    flex-direction: column-reverse; /* imaginea deasupra textului */
+    text-align: center;
+  }
+
+  .intro-text h2 {
+    font-size: 2rem;
+  }
+
+  .intro-text p {
+    font-size: 1rem;
+  }
+}
+
 
 /* -------- HERO -------- */
 .hero {
@@ -218,6 +310,112 @@ footer {
     gap: 1rem;
   }
 }
+
+/* 🔹 EXPLORE CRAFTS SECTION */
+.explore-crafts {
+  background-color: #f9f7f3;
+  text-align: center;
+  padding: 5rem 2rem;
+}
+
+.explore-crafts h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  color: #2e2e2e;
+  margin-bottom: 1rem;
+}
+
+.explore-crafts p {
+  color: #555;
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.craft-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  justify-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.craft-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 2rem 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.craft-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.craft-card img {
+  width: 70px;
+  margin-bottom: 1rem;
+}
+
+.craft-card h4 {
+  font-family: 'Playfair Display', serif;
+  color: #5a6632;
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.craft-card p {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+/* 🔹 CRAFT DETAIL PAGE STYLING */
+.craft-detail {
+  text-align: center;
+  padding: 5rem 2rem;
+  background-color: #f9f7f3;
+}
+
+.craft-detail h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  margin-bottom: 1.5rem;
+  color: #2e2e2e;
+}
+
+.craft-detail p {
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.7;
+}
+
+.craft-gallery {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.craft-gallery img {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.craft-gallery img:hover {
+  transform: scale(1.05);
+}
+
+
 /* ===== ANIMATION KEYFRAMES ===== */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
@@ -298,4 +496,196 @@ footer {
   max-width: 480px;
   border-radius: 12px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* 🔹 Default = mobile-first (telefoane) */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+}
+
+/* Navbar stacked on mobile */
+.navbar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Hero section text smaller on mobile */
+.hero h1 {
+  font-size: 1.8rem;
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+/* Map smaller on mobile */
+.map-container {
+  width: 90%;
+  height: 300px;
+  margin: 1rem auto;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Benefits stacked vertically */
+.benefit-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* For-artisans stacked on small screens */
+.for-artisans .artisans-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.artisans-image img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 10px;
+}
+
+/* 🔹 Default = mobile-first (telefoane) */
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(180deg, #f9f7f3 0%, #f4f1e8 100%);
+  font-family: "Inter", sans-serif;
+}
+
+/* Navbar stacked on mobile */
+.navbar {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.nav-links {
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Hero text mai mic pe mobil */
+.hero h1 {
+  font-size: 2rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* Map smaller on mobile */
+.map-container {
+  width: 90%;
+  height: 300px;
+  margin: 1rem auto;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Benefits stacked vertical */
+.benefit-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* For Artisans stacked pe mobil (imaginea deasupra textului) */
+.for-artisans .artisans-content {
+  display: flex;
+  flex-direction: column-reverse; /* ✅ imaginea deasupra textului */
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+  padding: 2rem 1rem;
+}
+
+.for-artisans .artisans-image img {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+
+
+/* 🔹 Medium screens (tablete >= 768px) */
+@media (min-width: 768px) {
+  body {
+    /* border-left: 12px solid #bcbcbc;
+    border-right: 12px solid #bcbcbc; */
+  }
+
+  .navbar {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem 3rem;
+  }
+
+  .nav-links {
+    flex-direction: row;
+    gap: 2rem;
+  }
+
+  .hero h1 {
+    font-size: 2.6rem;
+  }
+
+  .map-container {
+    width: 75%;
+    height: 380px;
+  }
+
+  .benefit-grid {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .for-artisans .artisans-content {
+    flex-direction: row; /* ✅ pe ecrane medii/largi: text + imagine orizontal */
+    justify-content: space-around;
+    align-items: center;
+    text-align: left;
+  }
+
+  .for-artisans .artisans-image img {
+    max-width: 460px;
+  }
+}
+
+/* 🔹 Large screens (desktop >= 1200px) */
+@media (min-width: 1200px) {
+  body {
+    /* border-left: 16px solid #a0a0a0;
+    border-right: 16px solid #a0a0a0; */
+  }
+
+  .hero h1 {
+    font-size: 3.5rem;
+  }
+
+  .map-container {
+    width: 65%;
+    height: 480px;
+  }
+
+  section {
+    padding: 3rem 8rem;
+  }
 }

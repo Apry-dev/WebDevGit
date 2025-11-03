@@ -1,5 +1,6 @@
 const express = require("express");
 const db = require("./utils/db");
+const path = require("path");
 require("dotenv").config();
 
 const app = express();
@@ -31,13 +32,12 @@ async function measureDbExecTime(query) {
 }
 
 // Routes
-app.get("/", (req, res) => {
-    res.json({
-        message: "TraditionConnect backend is running!",
-        status: "success",
-        timestamp: new Date().toISOString()
-    });
+app.use('/src', express.static(path.join(__dirname, '../frontend/src')));
+app.use('/assets', express.static(path.join(__dirname, '../frontend/public/assets')));
+app.get(["/", "/index.html"], (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/public/index.html"));
 });
+console.log("🚀 Serving static files from /src and /assets");
 
 // Health check endpoint
 app.get("/health", async (req, res) => {

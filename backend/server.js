@@ -4,7 +4,7 @@ const path = require("path");
 require("dotenv").config();
 
 const app = express();
-
+const PORT = process.env.PORT || 3000;
 
 // 🔹 Necesare pentru a folosi __dirname cu module type: "module"
 const __filename = fileURLToPath(import.meta.url);

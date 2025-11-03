@@ -4,24 +4,11 @@ const path = require("path");
 require("dotenv").config();
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Test database connection
-async function testConnection() {
-    try {
-        await db.execute('SELECT 1');
-        console.log("✅ Connected to MySQL database!");
-    } catch (error) {
-        console.error("❌ Database connection failed:", error.message);
-        console.log("💡 Make sure to run 'npm run init-db' first");
-    }
-}
-
-// Test connection on startup
-testConnection();
+// 🔹 Necesare pentru a folosi __dirname cu module type: "module"
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Utility function to measure execution time of a DB query
 async function measureDbExecTime(query) {
@@ -94,6 +81,5 @@ app.get("/products", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`📊 Health check: http://localhost:${PORT}/health`);
+  console.log(`✅ Server running at http://localhost:${PORT}`);
 });

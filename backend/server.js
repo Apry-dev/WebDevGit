@@ -1,23 +1,87 @@
-// server.js — serve frontend/public
-import express from "express";
-import path from "path";
-import { fileURLToPath } from "url";
+// server.js — Express API + static serving
+const path = require("path");
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT) || 3001;
+const HOST = process.env.HOST || "127.0.0.1";
 
-//  Necesare pentru a folosi __dirname cu module type: "module"
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Core middleware
+app.use(cors());
+app.use(express.json());
 
-// Servește fișierele statice din frontend/public
+// Static frontend (kept as-is)
 app.use(express.static(path.join(__dirname, "../frontend/public")));
-
-// Trimite index.html când intri pe rădăcină
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/public/index.html"));
+	res.sendFile(path.join(__dirname, "../frontend/public/index.html"));
+});
+app.get("/pottery", (req, res) => {
+	res.sendFile(path.join(__dirname, "../frontend/public/pottery.html"));
+});
+app.get("/sewing", (req, res) => {
+	res.sendFile(path.join(__dirname, "../frontend/public/sewing.html"));
+});
+app.get("/weaving", (req, res) => {
+	res.sendFile(path.join(__dirname, "../frontend/public/weaving.html"));
+});
+app.get("/woodcraft", (req, res) => {
+	res.sendFile(path.join(__dirname, "../frontend/public/woodcraft.html"));
 });
 
-app.listen(PORT, () => {
-  console.log(`✅ Server running at http://localhost:${PORT}`);
+// API routes
+app.use("/api/artisans", require("./routes/artisans"));
+app.use("/api/products", require("./routes/products"));
+app.use("/api/users", require("./routes/users"));
+
+// Global 404 for API
+app.use("/api", (req, res) => {
+	res.status(404).json({ message: "Not found" });
 });
+
+// Error handler
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+	const status = err.status || 500;
+	res.status(status).json({
+		message: err.message || "Internal Server Error"
+	});
+});
+
+function listenWithRetry(startPort, maxAttempts = 5) {
+	let attempts = 0;
+	let port = startPort;
+
+	function tryListen() {
+		const server = app.listen(port, HOST, () => {
+			console.log(`✅ Server running at http://${HOST}:${port}`);
+		});
+
+		server.on("error", (err) => {
+			if ((err.code === "EACCES" || err.code === "EADDRINUSE") && attempts < maxAttempts) {
+				attempts += 1;
+				port += 1;
+				console.warn(`⚠️  Port ${port - 1} unavailable (${err.code}). Retrying on ${port}...`);
+				setTimeout(tryListen, 100);
+			} else if (attempts >= maxAttempts) {
+				console.warn("⚠️  Max retries reached. Falling back to an ephemeral port.");
+				const fallback = app.listen(0, HOST, () => {
+					const addr = fallback.address();
+					console.log(`✅ Server running at http://${HOST}:${addr.port}`);
+				});
+				fallback.on("error", (e) => {
+					console.error("❌ Failed to bind to any port:", e);
+					process.exit(1);
+				});
+			} else {
+				console.error("❌ Server failed to start:", err);
+				process.exit(1);
+			}
+		});
+	}
+
+	tryListen();
+}
+
+listenWithRetry(PORT);

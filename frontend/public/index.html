@@ -13,19 +13,27 @@
 </head>
 
 <body>
-  <!-- 🔹 NAVBAR -->
-  <header class="navbar">
-    <div class="logo">Tradition<br>Connect</div>
-    <nav>
-      <ul class="nav-links">
-        <li><a href="#">Products</a></li>
-        <li><a href="#">Events</a></li>
-        <li><a href="#">People</a></li>
-        <li><a href="#">Contact Us</a></li>
-      </ul>
-    </nav>
-    <button class="login-btn">Log In</button>
-  </header>
+
+<header class="navbar">
+  <div class="logo">Tradition<br>Connect</div>
+
+  <!-- 🔹 Buton burger -->
+  <div class="menu-toggle" id="menu-toggle">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- 🔹 Meniu principal -->
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#crafts">Crafts</a></li>
+    <li><a href="#map">Map</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><button class="login-btn">Log In</button></li>
+  </ul>
+</header>
+
 
 <!-- 🔹 INTRO STORY SECTION -->
 <section class="intro-story">
@@ -138,5 +146,6 @@
   </footer>
 
   <script defer src="map.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

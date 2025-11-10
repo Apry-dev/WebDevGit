@@ -11,6 +11,7 @@ const HOST = process.env.HOST || "127.0.0.1";
 // Core middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Static frontend (kept as-is)
 app.use(express.static(path.join(__dirname, "../frontend/public")));
@@ -34,7 +35,15 @@ app.get("/woodcraft", (req, res) => {
 app.use("/api/artisans", require("./routes/artisans"));
 app.use("/api/products", require("./routes/products"));
 app.use("/api/users", require("./routes/users"));
+app.use("/api/auth", require("./routes/auth"));
 
+// Backward compatibility for existing frontend form posting to /register
+try {
+	const userCtrl = require("./controllers/userController");
+	app.post("/register", userCtrl.register);
+} catch (e) {
+	// controller missing should not crash server
+}
 // Global 404 for API
 app.use("/api", (req, res) => {
 	res.status(404).json({ message: "Not found" });

@@ -1,14 +1,16 @@
-const router = require("express").Router();
-const ctrl = require("../controllers/userController");
+const express = require('express');
+const router = express.Router();
+const auth = require('../middleware/auth');
+const userController = require('../controllers/userController');
 
-router.get("/", ctrl.list);
-router.get("/:id", ctrl.get);
-router.post("/", ctrl.create);
-router.put("/:id", ctrl.update);
-router.delete("/:id", ctrl.remove);
+router.get("/", userController.list);
+router.get("/:id", userController.get);
+router.post("/", userController.create);
+router.put("/:id", auth, userController.updateUser);
+router.delete("/:id", auth, userController.deleteUser);
 
 // Convenience registration endpoint
-router.post("/register", ctrl.register);
+router.post("/register", userController.register);
 
 module.exports = router;
 

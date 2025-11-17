@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Tradition Connect</title>
+
+  <!-- Fonts & Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/style.css" />
+
+  <style>
+    /* ===== CONTACT PAGE ===== */
+    .contact-section {
+      background: linear-gradient(180deg, #faf8f4 0%, #f4f1e8 100%);
+      padding: 6rem 2rem;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .contact-section h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      color: #2e2e2e;
+      margin-bottom: 1rem;
+    }
+
+    .contact-section p {
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 3rem;
+      max-width: 600px;
+    }
+
+    .contact-container {
+      background: #fff;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      border-radius: 16px;
+      padding: 3rem 2rem;
+      max-width: 700px;
+      width: 100%;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      text-align: left;
+    }
+
+    label {
+      font-weight: 500;
+      color: #333;
+      font-size: 1rem;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #5a6632;
+      outline: none;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .send-btn {
+      background-color: #5a6632;
+      color: #fff;
+      border: none;
+      padding: 0.9rem 2rem;
+      border-radius: 25px;
+      font-weight: 500;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .send-btn:hover {
+      background-color: #445024;
+    }
+
+    .contact-info {
+      margin-top: 3rem;
+      text-align: center;
+      color: #333;
+    }
+
+    .contact-info h3 {
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 1rem;
+      font-size: 1.6rem;
+      color: #2e2e2e;
+    }
+
+    .contact-info p {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .contact-container {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 🔹 Navbar -->
+  <header class="navbar">
+    <div class="logo">Tradition<br>Connect</div>
+
+    <div class="menu-toggle" id="menu-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#crafts">Crafts</a></li>
+      <li><a href="index.html#map">Map</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+      <li><button class="login-btn" onclick="window.location.href='login.html'">Login</button></li>
+    </ul>
+  </header>
+
+  <!-- 🔹 CONTACT SECTION -->
+  <section class="contact-section">
+    <h1>Contact Us</h1>
+    <p>We’d love to hear from you! Whether you’re an artisan, a partner, or just curious, drop us a message below and we’ll get back to you soon.</p>
+
+    <div class="contact-container">
+      <form id="contact-form">
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Your full name" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Your email address" required>
+
+        <label for="message">Message</label>
+        <textarea id="message" placeholder="Write your message..." required></textarea>
+
+        <button type="submit" class="send-btn">Send Message</button>
+      </form>
+    </div>
+
+    <div class="contact-info">
+      <h3>Other ways to reach us</h3>
+      <p><strong>Email:</strong> support@traditionconnect.com</p>
+      <p><strong>Phone:</strong> +40 745 123 456</p>
+      <p><strong>Address:</strong> Str. Mihai Eminescu 45, Cluj-Napoca, Romania</p>
+    </div>
+  </section>
+
+  <!-- 🔹 Footer -->
+  <footer>
+    <p>© 2025 Tradition Connect — Preserving cultural heritage through technology.</p>
+  </footer>
+
+  <script src="script.js"></script>
+
+  <script>
+    // Basic send message simulation
+    document.getElementById('contact-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message })
+      });
+
+      const data = await res.json();
+      alert(data.msg);
+      document.getElementById('contact-form').reset();
+    });
+  </script>
+</body>
+</html>

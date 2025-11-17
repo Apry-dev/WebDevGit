@@ -1,7 +1,10 @@
-const router = require("express").Router();
+const express = require('express');
+const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("../utils/db");
+const auth = require('../middleware/auth');
+const userController = require('../controllers/userController'); // create/adjust
 
 // POST /api/auth/signup
 router.post("/signup", async (req, res) => {
@@ -80,6 +83,8 @@ router.post("/forgot-password", async (req, res) => {
 		return res.status(500).json({ msg: "Server error" });
 	}
 });
+
+router.get('/me', auth, userController.getMe);
 
 module.exports = router;
 

@@ -1,4 +1,5 @@
-const Users = require("../models/userModel");
+const User = require('../models/userModel');
+const bcrypt = require('bcrypt');
 
 async function list(req, res, next) {
 	try {
@@ -64,6 +65,35 @@ async function register(req, res, next) {
 		next(e);
 	}
 }
+
+exports.getMe = (req, res) => {
+  res.json(req.user);
+};
+
+exports.updateUser = async (req, res) => {
+  try {
+    if (req.user._id.toString() !== req.params.id) return res.status(403).json({ msg: 'Not allowed' });
+    const { name, email, password } = req.body;
+    const update = { name, email };
+    if (password) update.passwordHash = await bcrypt.hash(password, 10);
+    const user = await User.findByIdAndUpdate(req.params.id, update, { new: true }).select('-passwordHash');
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    if (req.user._id.toString() !== req.params.id) return res.status(403).json({ msg: 'Not allowed' });
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ msg: 'Deleted' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+};
 
 module.exports = { list, get, create, update, remove, register };
 

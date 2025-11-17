@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Account — Tradition Connect</title>
+  <link rel="stylesheet" href="styles/style.css" />
+</head>
+<body>
+  <main class="auth-container">
+    <div class="auth-box" id="account-box">
+      <h2>Your Account</h2>
+      <form id="account-form">
+        <input type="text" id="name" placeholder="Full Name" required />
+        <input type="email" id="email" placeholder="Email" required />
+        <hr />
+        <input type="password" id="password" placeholder="New password (leave empty to keep)" />
+        <input type="password" id="passwordConfirm" placeholder="Confirm new password" />
+        <button type="submit" class="signup-btn">Save changes</button>
+      </form>
+
+      <div style="margin-top:1rem;">
+        <button id="logout-btn" class="signup-btn" style="background:#777">Logout</button>
+        <button id="delete-btn" class="signup-btn" style="background:#b33; margin-left:.5rem">Delete account</button>
+      </div>
+
+      <p id="feedback" style="color:#b33; margin-top:1rem"></p>
+    </div>
+  </main>
+
+  <script src="account.js"></script>
+</body>
+</html>

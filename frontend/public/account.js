@@ -37,9 +37,9 @@ function showFeedback(msg, isError = false) {
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     const user = await fetchProfile();
-    document.getElementById('name').value = user.name || '';
+    document.getElementById('name').value = user.username || '';
     document.getElementById('email').value = user.email || '';
-    document.getElementById('account-form').dataset.userid = user._id || user.id;
+    document.getElementById('account-form').dataset.userid = user.id;
   } catch (err) {
     console.error(err);
     // Not logged in -> redirect to login
@@ -56,7 +56,8 @@ document.getElementById('account-form').addEventListener('submit', async (e) => 
   const passwordConfirm = document.getElementById('passwordConfirm').value;
   if (password && password !== passwordConfirm) return showFeedback('Passwords do not match', true);
 
-  const payload = { id, name, email };
+  // backend expects `username` field
+  const payload = { id, username: name, email };
   if (password) payload.password = password;
 
   const res = await updateProfile(payload);

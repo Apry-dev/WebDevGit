@@ -95,6 +95,17 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { list, get, create, update, remove, register };
+module.exports = {
+  list,
+  get,
+  create,
+  update,
+  remove,
+  register,
+  // re-export the functions added via `exports.*` earlier
+  getMe: exports.getMe,
+  updateUser: exports.updateUser,
+  deleteUser: exports.deleteUser
+};
 
 

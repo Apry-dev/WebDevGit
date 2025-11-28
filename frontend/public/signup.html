@@ -121,39 +121,11 @@
       <div class="auth-links">
         <p>Already have an account? <a href="login.html">Log In</a></p>
       </div>
+
+      <!-- include the client script so form posts -->
+      <script src="signup.js"></script>
     </div>
   </div>
 
-  <script>
-    document.getElementById('signup-form').addEventListener('submit', async e => {
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      const confirm = document.getElementById('confirm').value;
-
-      if (password !== confirm) {
-        alert('Passwords do not match');
-        return;
-      }
-
-      try {
-        const res = await fetch('/api/auth/signup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, password })
-        });
-        const data = await res.json();
-        if (!res.ok) {
-          alert(data.msg || 'Signup failed');
-          return;
-        }
-        alert(data.msg || 'Signup successful');
-        window.location.href = 'login.html';
-      } catch (err) {
-        alert('Network error');
-      }
-    });
-  </script>
 </body>
 </html>

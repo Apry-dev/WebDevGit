@@ -47,6 +47,7 @@ body {
 }
 
 .nav-links a {
+  cursor: pointer;
   text-decoration: none;
   color: #000;
   font-weight: 500;

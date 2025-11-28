@@ -16,10 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       const data = await res.json();
-      // store token
-      if (data.token) localStorage.setItem('token', data.token);
-      // redirect to account page
-      window.location.href = 'account.html';
+      if (!data.token) return alert('Login failed');
+      localStorage.setItem('token', data.token);
+      window.location = 'account.html';
     } catch (err) {
       console.error(err);
       alert('Network error');

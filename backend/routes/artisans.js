@@ -1,11 +1,16 @@
-const router = require("express").Router();
-const ctrl = require("../controllers/artisanController");
+const express = require('express');
+const router = express.Router();
+const auth = require('../middleware/auth');
+const artisanController = require('../controllers/artisanController');
 
-router.get("/", ctrl.list);
-router.get("/:id", ctrl.get);
-router.post("/", ctrl.create);
-router.put("/:id", ctrl.update);
-router.delete("/:id", ctrl.remove);
+// public list
+router.get('/', artisanController.list);
+
+// create — protected
+router.post('/', auth, artisanController.create);
+
+// optional: get single artisan
+router.get('/:id', artisanController.get);
 
 module.exports = router;
 

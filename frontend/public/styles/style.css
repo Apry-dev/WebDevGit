@@ -856,3 +856,21 @@ body {
     padding: 3rem 8rem;
   }
 }
+
+/* small back button for account pages */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #2b2b2b;
+  text-decoration: none;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+  font-weight: 500;
+  margin: 1rem;
+}
+.back-btn svg { display:block; transform: translateX(-1px); }
+.back-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(0,0,0,0.08); }

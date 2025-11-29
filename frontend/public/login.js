@@ -16,9 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       const data = await res.json();
-      if (!data.token) return alert('Login failed');
-      localStorage.setItem('token', data.token);
-      window.location = 'account.html';
+      // store token
+      if (data.token) localStorage.setItem('token', data.token);
+
+      // Redirect to homepage by default (or to ?next=... if provided)
+      const params = new URLSearchParams(window.location.search);
+      const next = params.get('next');
+      window.location.href = next ? next : 'index.html';
     } catch (err) {
       console.error(err);
       alert('Network error');

@@ -216,11 +216,46 @@ async function remove(req, res, next) {
   }
 }
 
+// ===============================
+// ADD / REMOVE FAVOURITES FOR ARTISANS
+// ===============================
+async function addFavourite(req, res, next) {
+  try {
+    const userId = req.user && req.user.id;
+    if (!userId) return res.status(401).json({ msg: "Not authenticated" });
+
+    const artisanId = Number(req.params.id);
+    const [exists] = await db.query('SELECT id FROM artisans WHERE id = ?', [artisanId]);
+    if (exists.length === 0) return res.status(404).json({ msg: 'Artisan not found' });
+
+    await db.query(
+      'INSERT INTO favourites (user_id, artisan_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE created_at = created_at',
+      [userId, artisanId]
+    );
+
+    res.status(201).json({ msg: 'Added to favourites' });
+  } catch (err) { next(err); }
+}
+
+async function removeFavourite(req, res, next) {
+  try {
+    const userId = req.user && req.user.id;
+    if (!userId) return res.status(401).json({ msg: "Not authenticated" });
+
+    const artisanId = Number(req.params.id);
+    await db.query('DELETE FROM favourites WHERE user_id = ? AND artisan_id = ?', [userId, artisanId]);
+
+    res.json({ msg: 'Removed from favourites' });
+  } catch (err) { next(err); }
+}
+
 module.exports = {
   list,
   get,
   getMyArtisan,
   create,
   update,
-  remove
+  remove,
+  addFavourite,
+  removeFavourite
 };

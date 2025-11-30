@@ -119,6 +119,21 @@ async function deleteUser(req, res) {
 	}
 }
 
+async function getMyFavourites(req, res, next) {
+	try {
+		if (!req.user || !req.user.id) return res.status(401).json({ msg: 'Not authenticated' });
+		const userId = req.user.id;
+		const [rows] = await db.query(
+			`SELECT a.id, a.name AS title, a.bio AS craft, a.location, a.lat, a.lng, a.icon, f.created_at
+			 FROM favourites f
+			 JOIN artisans a ON f.artisan_id = a.id
+			 WHERE f.user_id = ?
+			 ORDER BY f.created_at DESC`, [userId]
+		);
+		res.json(rows);
+	} catch (err) { next(err); }
+}
+
 module.exports = {
 	list,
 	get,
@@ -128,7 +143,8 @@ module.exports = {
 	register,
 	getMe,
 	updateUser,
-	deleteUser
+	deleteUser,
+	getMyFavourites
 };
 
 

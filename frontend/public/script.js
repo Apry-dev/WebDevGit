@@ -19,38 +19,44 @@ if (menuToggle && navLinks) {
 }
 
 // ===== AUTH-AWARE NAVBAR =====
-document.addEventListener('DOMContentLoaded', () => {
-  // async check to confirm token is valid on server
-  async function updateAuthNav() {
-    const token = localStorage.getItem('token');
-    let logged = false;
 
-    if (token && token !== 'undefined' && token !== 'null') {
-      try {
-        const res = await fetch('/api/auth/me', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        logged = res.ok;
-        if (!logged) localStorage.removeItem('token');
-      } catch {
-        localStorage.removeItem('token');
-        logged = false;
-      }
+// define at top-level so listeners can call it
+async function updateAuthNav() {
+  const token = localStorage.getItem('token');
+  let logged = false;
+
+  if (token && token !== 'null' && token !== 'undefined') {
+    try {
+      const res = await fetch('/api/auth/me', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      logged = res.ok;
+      if (!logged) localStorage.removeItem('token');
+    } catch {
+      localStorage.removeItem('token');
+      logged = false;
     }
-
-    document.querySelectorAll('a.login-btn, button.login-btn').forEach(el => {
-      if (logged) {
-        el.textContent = 'My Account';
-        el.href = 'account.html';
-        el.onclick = null;
-      } else {
-        el.textContent = 'Log In';
-        el.href = 'login.html';
-        el.onclick = null;
-      }
-    });
   }
 
+  // show/hide items meant only for authenticated users
+  document.querySelectorAll('.auth-only').forEach(el => {
+    el.style.display = logged ? '' : 'none';
+  });
+
+  // update private links to redirect to login when not logged
+  document.querySelectorAll('a.private-link').forEach(a => {
+    const target = a.dataset.href || a.getAttribute('href') || '';
+    a.href = logged ? target : `login.html?next=${encodeURIComponent(target)}`;
+  });
+
+  // login button -> account when logged
+  document.querySelectorAll('a.login-btn, button.login-btn').forEach(el => {
+    if (logged) { el.textContent = 'My Account'; el.href = 'account.html'; }
+    else { el.textContent = 'Log In'; el.href = 'login.html'; }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
   updateAuthNav();
 
   // wire Join as Artisan CTA after DOM ready
@@ -65,5 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // existing burger/menu code (guarded earlier)
+  // existing burger/menu code is already set up earlier
 });
+
+// update auth UI if token changes in other tabs
+window.addEventListener('storage', (e) => { if (e.key === 'token') updateAuthNav(); });

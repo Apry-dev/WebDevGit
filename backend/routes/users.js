@@ -10,6 +10,7 @@ router.post('/', userController.create);
 // dacă vrei update protejat:
 router.put('/:id', auth, userController.updateUser); // sau userController.update dacă e admin
 router.delete('/:id', auth, userController.deleteUser);
+router.get('/me/favourites', auth, userController.getMyFavourites);
 
 module.exports = router;
 

@@ -1,17 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const auth = require('../middleware/auth');
-const artisanController = require('../controllers/artisanController');
+const router = require("express").Router();
+const auth = require("../middleware/auth");
+const artisan = require("../controllers/artisanController");
 
-// public list
-router.get('/', artisanController.list);
-
-// create — protected
-router.post('/', auth, artisanController.create);
-
-// optional: get single artisan
-router.get('/:id', artisanController.get);
+router.get("/", artisan.list);
+router.get("/me", auth, artisan.getMyArtisan);
+router.get("/:id", artisan.get);
+router.post("/", auth, artisan.create);
+router.put("/:id", auth, artisan.update);
+router.delete("/:id", auth, artisan.remove);
+router.post("/:id/favourites", auth, artisan.addFavourite);
+router.delete("/:id/favourites", auth, artisan.removeFavourite);
 
 module.exports = router;
-
-

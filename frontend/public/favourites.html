@@ -1,16 +1,37 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>My favourites — Tradition Connect</title>
-  <link rel="stylesheet" href="styles/style.css">
+  <link rel="stylesheet" href="styles/style.css" />
 </head>
+
 <body>
-  <main>
-    <h1>My favourites</h1>
-    <div id="content"></div>
-    <p><small>If this page shows "401/Unauthorized" the server route is protected (expected).</small></p>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="logo">Tradition<br>Connect</div>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="crafts.html">Crafts</a>
+      <a href="account.html">Account</a>
+      <a href="favourites.html" class="active">Favourites</a>
+    </nav>
+
+    <button class="login-btn" onclick="logout()" style="background:#8B0000;">
+      Logout
+    </button>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="content-wrap" style="max-width:1100px;margin:3rem auto;">
+    <h1 style="text-align:center;">My favourites</h1>
+
+    <div id="content" style="margin-top:2rem;"></div>
   </main>
+
   <script src="favourites.js"></script>
 </body>
 </html>

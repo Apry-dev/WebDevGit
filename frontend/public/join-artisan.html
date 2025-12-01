@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join as Artisan — Tradition Connect</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/style.css">
+
+  <style>
+    body {
+      background: linear-gradient(180deg, #faf8f4 0%, #f4f1e8 100%);
+      font-family: "Inter", sans-serif;
+    }
+
+    .page-container {
+      display: flex;
+      justify-content: center;
+      padding: 3rem 1rem;
+    }
+
+    .form-box {
+      width: 100%;
+      max-width: 700px;
+      background: #fff;
+      padding: 3rem 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .form-box h2 {
+      font-family: "Playfair Display", serif;
+      font-size: 2.4rem;
+      margin-bottom: 0.7rem;
+      color: #2e2e2e;
+    }
+
+    .form-box p {
+      color: #666;
+      margin-bottom: 2rem;
+    }
+
+    .form-box label {
+      font-weight: 600;
+      margin-top: 1rem;
+      display: block;
+      color: #444;
+    }
+
+    .form-box input,
+    .form-box select {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 1rem;
+      margin-top: 0.3rem;
+    }
+
+    .save-btn {
+      background-color: #5a6632;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 0.9rem 2rem;
+      width: 100%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 1.5rem;
+    }
+
+    .save-btn:hover {
+      background-color: #445024;
+    }
+
+    #icon-preview {
+      width: 48px;
+      height: 48px;
+      background: #f6f6f6;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    #join-feedback {
+      margin-top: 1rem;
+      color: #b33;
+      font-weight: 500;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="logo">Tradition<br>Connect</div>
+  <a href="index.html" class="login-btn">Back</a>
+</header>
+
+<div class="page-container">
+  <form id="artisan-form" class="form-box">
+    <h2>Join as Artisan</h2>
+    <p>Share your craft and location so visitors can discover your work on the map.</p>
+
+    <label>Workshop / Business Name</label>
+    <input id="title" placeholder="e.g. Ana's Weaving Studio" required>
+
+    <label>Craft Type</label>
+    <select id="craft" required>
+      <option value="">Choose...</option>
+      <option value="weaving" data-icon="assets/icons/weaving.png">Weaving</option>
+      <option value="sewing" data-icon="assets/icons/sewing.png">Sewing</option>
+      <option value="pottery" data-icon="assets/icons/pottery.png">Pottery</option>
+      <option value="woodcraft" data-icon="assets/icons/woodcraft.png">Woodcraft</option>
+      <option value="costumes" data-icon="assets/icons/costumes.png">Traditional Costumes</option>
+    </select>
+
+    <label>Street</label>
+    <input id="street" placeholder="e.g. Str. Mihai Eminescu" required>
+
+    <label>Number</label>
+    <input id="number" placeholder="e.g. 45" required>
+
+    <label>City / Town</label>
+    <input id="city" placeholder="e.g. Cluj-Napoca" required>
+
+    <label>Icon Preview</label>
+    <div id="icon-preview"></div>
+
+    <button class="save-btn" type="submit">Add my Workshop</button>
+    <p id="join-feedback"></p>
+  </form>
+</div>
+
+<script src="join-artisan.js"></script>
+</body>
+</html>

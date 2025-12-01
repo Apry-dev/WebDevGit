@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Crafts — Tradition Connect</title>
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">Tradition<br>Connect</div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="crafts.html" class="active">Crafts</a>
+    </nav>
+    <a class="login-btn" href="login.html">Log In</a>
+  </header>
+
+  <main class="content-wrap" style="max-width:1100px;margin:3rem auto;">
+    <h1 style="text-align:center;font-family:'Playfair Display',serif;">Artisans & Crafts</h1>
+
+    <div style="display:flex;gap:1rem;align-items:center;margin:1.25rem 0;">
+      <input id="q" placeholder="Search by artisan name or craft" style="flex:1;padding:0.6rem;border-radius:8px;border:1px solid #ccc;">
+      <select id="filterCraft" style="padding:0.6rem;border-radius:8px;border:1px solid #ccc;">
+        <option value="">All crafts</option>
+      </select>
+      <button id="search" style="padding:0.6rem 1rem;background:#556B2F;color:#fff;border:none;border-radius:8px;">Search</button>
+    </div>
+
+    <div id="list" class="card-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;"></div>
+  </main>
+
+  <script src="crafts.js"></script>
+</body>
+</html>

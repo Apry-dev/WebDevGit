@@ -1,12 +1,14 @@
 const router = require("express").Router();
-const ctrl = require("../controllers/artisanController");
+const auth = require("../middleware/auth");
+const artisan = require("../controllers/artisanController");
 
-router.get("/", ctrl.list);
-router.get("/:id", ctrl.get);
-router.post("/", ctrl.create);
-router.put("/:id", ctrl.update);
-router.delete("/:id", ctrl.remove);
+router.get("/", artisan.list);
+router.get("/me", auth, artisan.getMyArtisan);
+router.get("/:id", artisan.get);
+router.post("/", auth, artisan.create);
+router.put("/:id", auth, artisan.update);
+router.delete("/:id", auth, artisan.remove);
+router.post("/:id/favourites", auth, artisan.addFavourite);
+router.delete("/:id/favourites", auth, artisan.removeFavourite);
 
 module.exports = router;
-
-

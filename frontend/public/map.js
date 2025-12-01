@@ -98,30 +98,44 @@ function initMap() {
     },
   ];
 
-  // 🔹 Adaugă marker-ele pe hartă
-  artisans.forEach((artisan) => {
-    const marker = new google.maps.Marker({
-      position: artisan.position,
-      map,
-      title: artisan.title,
-      icon: {
-        url: artisan.icon,
-        scaledSize:
-          artisan.icon.includes("sewing") ? new google.maps.Size(36, 36)
-          : artisan.icon.includes("costumes") ? new google.maps.Size(44, 44)
-          : new google.maps.Size(42, 42),
-      },
-    });
+  // fetch artisan records from API — fallback to hardcoded list if error
+  async function loadRemoteArtisans() {
+    try {
+      const res = await fetch('/api/artisans');
+      if (!res.ok) throw new Error('no data');
+      const list = await res.json();
+      return list.map(a => ({
+        position: { lat: Number(a.lat), lng: Number(a.lng) },
+        title: a.title || a.username || 'Artisan',
+        icon: a.icon || `./assets/icons/${a.craft || 'pottery'}.png`
+      }));
+    } catch (e) {
+      console.warn('Failed to load artisans from API, using fallback', e);
+      return artisans; // previously declared fallback array
+    }
+  }
 
-    // 🔸 Pop-up la click
-    const infoWindow = new google.maps.InfoWindow({
-      content: `<div style="font-family:Inter;font-size:14px;">
-                  <strong>${artisan.title}</strong>
-                </div>`,
-    });
+  // replace artisans.forEach(...) after fetch
+  loadRemoteArtisans().then(list => {
+    list.forEach((artisan) => {
+      // create marker as before
+      const marker = new google.maps.Marker({
+        position: artisan.position,
+        map,
+        title: artisan.title,
+        icon: {
+          url: artisan.icon,
+          scaledSize: artisan.icon.includes("sewing") ? new google.maps.Size(36, 36)
+            : artisan.icon.includes("costumes") ? new google.maps.Size(44, 44)
+            : new google.maps.Size(42, 42),
+        },
+      });
 
-    marker.addListener("click", () => {
-      infoWindow.open(map, marker);
+      const infoWindow = new google.maps.InfoWindow({
+        content: `<div style="font-family:Inter;font-size:14px;"><strong>${artisan.title}</strong></div>`,
+      });
+
+      marker.addListener("click", () => infoWindow.open(map, marker));
     });
   });
 }

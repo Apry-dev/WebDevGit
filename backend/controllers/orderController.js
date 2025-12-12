@@ -1,59 +1,137 @@
+// controllers/orderController.js
 const db = require('../utils/db');
 
+/* ===============================
+   CREATE ORDER
+   POST /api/orders
+================================ */
 async function createOrder(req, res, next) {
   try {
-    if (!req.user || !req.user.id) return res.status(401).json({ msg: 'Not authenticated' });
-    const userId = req.user.id;
-    const { total = 0 } = req.body;
-    const [result] = await db.query('INSERT INTO orders (user_id, total) VALUES (?, ?)', [userId, total]);
-    res.status(201).json({ id: result.insertId, user_id: userId, total, status: 'pending' });
-  } catch (err) { next(err); }
+    if (!req.user) {
+      return res.status(401).json({ msg: 'Not authenticated' });
+    }
+
+    const { productId, quantity = 1 } = req.body;
+
+    if (!productId) {
+      return res.status(400).json({ msg: 'productId is required' });
+    }
+
+    // Fetch product price
+    const [products] = await db.query(
+      'SELECT price FROM products WHERE id = ?',
+      [productId]
+    );
+
+    if (!products.length) {
+      return res.status(404).json({ msg: 'Product not found' });
+    }
+
+    const price = Number(products[0].price);
+    const qty = Number(quantity);
+    const total = price * qty;
+
+    // Create order
+    const [orderRes] = await db.query(
+      'INSERT INTO orders (user_id, total, status) VALUES (?, ?, ?)',
+      [req.user.id, total, 'pending']
+    );
+
+    const orderId = orderRes.insertId;
+
+    // Create order item
+    await db.query(
+      `INSERT INTO order_items (order_id, product_id, quantity)
+       VALUES (?, ?, ?)`,
+      [orderId, productId, qty]
+    );
+
+    res.status(201).json({
+      id: orderId,
+      total,
+      status: 'pending'
+    });
+  } catch (err) {
+    next(err);
+  }
 }
 
+/* ===============================
+   LIST MY ORDERS (ACTIVE ONLY)
+   GET /api/orders/me
+================================ */
 async function listMyOrders(req, res, next) {
   try {
-    const userId = req.user.id;
-    const [rows] = await db.query('SELECT id, user_id, total, status, created_at FROM orders WHERE user_id = ? ORDER BY created_at DESC', [userId]);
+    if (!req.user) {
+      return res.status(401).json({ msg: 'Not authenticated' });
+    }
+
+    const [rows] = await db.query(
+      `
+      SELECT 
+        o.id,
+        o.total,
+        o.status,
+        o.created_at,
+        p.name AS product_name,
+        oi.quantity,
+        a.name AS artisan_name
+      FROM orders o
+      JOIN order_items oi ON o.id = oi.order_id
+      JOIN products p ON oi.product_id = p.id
+      JOIN artisans a ON p.artisan_id = a.id
+      WHERE o.user_id = ?
+        AND o.status != 'cancelled'
+      ORDER BY o.created_at DESC
+      `,
+      [req.user.id]
+    );
+
     res.json(rows);
-  } catch (err) { next(err); }
+  } catch (err) {
+    next(err);
+  }
 }
 
-module.exports = { createOrder, listMyOrders };
-const Order = require("../models/orderModel");
+/* ===============================
+   CANCEL ORDER (USER)
+   PUT /api/orders/:id/cancel
+================================ */
+async function cancelOrder(req, res, next) {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ msg: 'Not authenticated' });
+    }
 
-async function createOrder(req, res, next) {
-	try {
-		if (!req.user) {
-			return res.status(401).json({ message: "Not authenticated" });
-		}
-		
-		const { items } = req.body; // items: [{ productId, quantity }]
-		if (!items || !Array.isArray(items) || items.length === 0) {
-			return res.status(400).json({ message: "items array is required" });
-		}
-		
-		const order = await Order.createOrder(req.user.id, items);
-		res.status(201).json(order);
-	} catch (e) {
-		next(e);
-	}
-}
+    const orderId = req.params.id;
 
-async function getMyOrders(req, res, next) {
-	try {
-		if (!req.user) {
-			return res.status(401).json({ message: "Not authenticated" });
-		}
-		
-		const orders = await Order.getUserOrders(req.user.id);
-		res.json(orders);
-	} catch (e) {
-		next(e);
-	}
+    // Ensure order belongs to user and is cancellable
+    const [orders] = await db.query(
+      'SELECT id, status FROM orders WHERE id = ? AND user_id = ?',
+      [orderId, req.user.id]
+    );
+
+    if (!orders.length) {
+      return res.status(404).json({ msg: 'Order not found' });
+    }
+
+    if (orders[0].status !== 'pending') {
+      return res.status(400).json({ msg: 'Order cannot be cancelled' });
+    }
+
+    await db.query(
+      'UPDATE orders SET status = ? WHERE id = ?',
+      ['cancelled', orderId]
+    );
+
+    res.json({ msg: 'Order cancelled' });
+  } catch (err) {
+    next(err);
+  }
 }
 
 module.exports = {
-	createOrder,
-	getMyOrders
+  createOrder,
+  listMyOrders,
+  cancelOrder
 };
-

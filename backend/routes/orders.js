@@ -1,8 +1,11 @@
+// routes/orders.js
 const router = require('express').Router();
 const auth = require('../middleware/auth');
-const orderCtrl = require('../controllers/orderController');
+const ctrl = require('../controllers/orderController');
 
-router.post('/', auth, orderCtrl.createOrder);
-router.get('/me', auth, orderCtrl.listMyOrders);
+// USER ROUTES
+router.post('/', auth, ctrl.createOrder);
+router.get('/me', auth, ctrl.listMyOrders);
+router.put('/:id/cancel', auth, ctrl.cancelOrder);
 
 module.exports = router;

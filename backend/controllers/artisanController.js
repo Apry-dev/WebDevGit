@@ -1,23 +1,25 @@
 const db = require("../utils/db");
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
-// ===============================
-// GET ALL ARTISANS
-// ===============================
+/* ===============================
+   GET ALL ARTISANS
+================================ */
 async function list(req, res, next) {
   try {
     const [rows] = await db.query(
-      "SELECT id, name, location, bio, lat, lng, icon, user_id FROM artisans ORDER BY id DESC"
+      "SELECT id, user_id, name, bio, location, lat, lng, icon FROM artisans ORDER BY id DESC"
     );
 
     const mapped = rows.map(r => ({
       id: r.id,
-      user_id: r.user_id || null,
-      title: r.name || null,
-      craft: r.bio || null,
-      lat: r.lat ? Number(r.lat) : null,
-      lng: r.lng ? Number(r.lng) : null,
-      icon: r.icon || "assets/icons/pottery.png",
-      location: r.location || null
+      user_id: r.user_id,
+      title: r.name,
+      craft: r.bio,
+      location: r.location,
+      lat: Number(r.lat),
+      lng: Number(r.lng),
+      icon: r.icon
     }));
 
     res.json(mapped);
@@ -26,227 +28,179 @@ async function list(req, res, next) {
   }
 }
 
-// ===============================
-// GET SINGLE ARTISAN BY ID
-// ===============================
+/* ===============================
+   GET ARTISAN BY ID
+================================ */
 async function get(req, res, next) {
   try {
     const [rows] = await db.query(
-      "SELECT * FROM artisans WHERE id = ?",
+      "SELECT * FROM artisans WHERE id=?",
       [req.params.id]
     );
-
-    if (rows.length === 0) return res.status(404).json({ msg: "Not found" });
+    if (!rows.length) return res.status(404).json({ msg: "Not found" });
 
     const r = rows[0];
-
-    return res.json({
+    res.json({
       id: r.id,
       user_id: r.user_id,
       title: r.name,
       craft: r.bio,
+      location: r.location,
       lat: r.lat,
       lng: r.lng,
       icon: r.icon,
-      location: r.location
+      bio: r.bio
     });
   } catch (err) {
     next(err);
   }
 }
 
-// ===============================
-// GET MY ARTISAN (LOGGED USER)
-// ===============================
+/* ===============================
+   GET MY ARTISAN
+================================ */
 async function getMyArtisan(req, res, next) {
   try {
-    const userId = req.user.id;
-
     const [rows] = await db.query(
-      "SELECT * FROM artisans WHERE user_id = ?",
-      [userId]
+      "SELECT * FROM artisans WHERE user_id=?",
+      [req.user.id]
     );
-
-    if (rows.length === 0) return res.json(null);
+    if (!rows.length) return res.json(null);
 
     const r = rows[0];
-
-    return res.json({
+    res.json({
       id: r.id,
       user_id: r.user_id,
       title: r.name,
       craft: r.bio,
+      location: r.location,
       lat: r.lat,
       lng: r.lng,
       icon: r.icon,
-      location: r.location
+      bio: r.bio
     });
   } catch (err) {
     next(err);
   }
 }
 
-// ===============================
-// CREATE ARTISAN
-// ===============================
+/* ===============================
+   CREATE ARTISAN
+================================ */
 async function create(req, res, next) {
   try {
-    console.log('ENTER create artisan -> req.user=', req.user);
-    if (!req.user || !req.user.id) return res.status(401).json({ msg: "Not authenticated" });
-
     const { title, craft, address } = req.body;
-    if (!title || !craft) {
+    if (!title || !craft || !address)
       return res.status(400).json({ msg: "Missing fields" });
-    }
 
-    // Geocode address => lat/lng
-    const q = encodeURIComponent(address);
-    const geoRes = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${q}`
+    const geo = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(
+        address
+      )}`
     );
-    const geoJson = await geoRes.json();
+    const g = await geo.json();
+    if (!g.length) return res.status(400).json({ msg: "Invalid address" });
 
-    if (!geoJson || geoJson.length === 0) {
-      return res.status(400).json({ msg: "Address not found" });
-    }
+    const icon = `assets/icons/${craft}.png`;
 
-    const lat = Number(geoJson[0].lat);
-    const lng = Number(geoJson[0].lon);
-
-    const icon =
-      craft === "sewing"
-        ? "assets/icons/sewing.png"
-        : craft === "weaving"
-        ? "assets/icons/weaving.png"
-        : craft === "woodcraft"
-        ? "assets/icons/woodcraft.png"
-        : craft === "costumes"
-        ? "assets/icons/costumes.png"
-        : "assets/icons/pottery.png";
-
-    const [result] = await db.query(
-      "INSERT INTO artisans (user_id, name, bio, location, lat, lng, icon) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      [req.user.id, title, craft, address, lat, lng, icon]
+    const [r] = await db.query(
+      `INSERT INTO artisans (user_id, name, bio, location, lat, lng, icon)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [req.user.id, title, craft, address, g[0].lat, g[0].lon, icon]
     );
 
-    res.json({
-      id: result.insertId,
-      user_id: req.user.id,
-      title,
-      craft,
-      location: address,
-      lat,
-      lng,
-      icon
-    });
+    res.status(201).json({ id: r.insertId });
   } catch (err) {
     next(err);
   }
 }
 
-// ===============================
-// UPDATE ARTISAN (EDIT PROFILE)
-// ===============================
+/* ===============================
+   UPDATE ARTISAN
+================================ */
 async function update(req, res, next) {
   try {
-    const userId = req.user.id;
-    const { id } = req.params;
-
     const { title, craft, bio, address } = req.body;
 
-    // ensure the user owns the artisan
-    const [owner] = await db.query(
-      "SELECT id FROM artisans WHERE id = ? AND user_id = ?",
-      [id, userId]
-    );
-
-    if (owner.length === 0) {
-      return res.status(403).json({ msg: "Unauthorized" });
-    }
-
-    // geocode
-    let lat = null;
-    let lng = null;
+    let lat = null,
+      lng = null;
 
     if (address) {
-      const q = encodeURIComponent(address);
       const geo = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${q}&limit=1`
+        `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(
+          address
+        )}`
       );
-      const gj = await geo.json();
-      if (gj.length > 0) {
-        lat = Number(gj[0].lat);
-        lng = Number(gj[0].lon);
+      const g = await geo.json();
+      if (g.length) {
+        lat = g[0].lat;
+        lng = g[0].lon;
       }
     }
 
     await db.query(
-      "UPDATE artisans SET name=?, bio=?, location=?, lat=?, lng=? WHERE id=?",
-      [title, craft || bio, address, lat, lng, id]
+      `UPDATE artisans
+       SET name=?, bio=?, location=?, lat=?, lng=?
+       WHERE id=? AND user_id=?`,
+      [title, bio || craft, address, lat, lng, req.params.id, req.user.id]
     );
 
-    return res.json({ msg: "Updated successfully" });
+    res.json({ msg: "Updated successfully" });
   } catch (err) {
     next(err);
   }
 }
 
-// ===============================
-// DELETE ARTISAN
-// ===============================
+/* ===============================
+   DELETE ARTISAN
+================================ */
 async function remove(req, res, next) {
   try {
-    const userId = req.user.id;
-    const { id } = req.params;
-
-    const [owner] = await db.query(
-      "SELECT id FROM artisans WHERE id = ? AND user_id = ?",
-      [id, userId]
+    await db.query(
+      "DELETE FROM artisans WHERE id=? AND user_id=?",
+      [req.params.id, req.user.id]
     );
-
-    if (owner.length === 0) {
-      return res.status(403).json({ msg: "Unauthorized" });
-    }
-
-    await db.query("DELETE FROM artisans WHERE id = ?", [id]);
-
-    res.json({ msg: "Workshop deleted" });
+    res.json({ msg: "Deleted" });
   } catch (err) {
     next(err);
   }
 }
 
-// ===============================
-// ADD / REMOVE FAVOURITES FOR ARTISANS
-// ===============================
+/* ===============================
+   FAVOURITES
+================================ */
 async function addFavourite(req, res, next) {
   try {
-    const userId = req.user && req.user.id;
-    if (!userId) return res.status(401).json({ msg: "Not authenticated" });
-
+    const userId = req.user.id;
     const artisanId = Number(req.params.id);
-    const [exists] = await db.query('SELECT id FROM artisans WHERE id = ?', [artisanId]);
-    if (exists.length === 0) return res.status(404).json({ msg: 'Artisan not found' });
 
     await db.query(
-      'INSERT INTO favourites (user_id, artisan_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE created_at = created_at',
+      `INSERT INTO favourites (user_id, artisan_id)
+       VALUES (?, ?)
+       ON DUPLICATE KEY UPDATE artisan_id = artisan_id`,
       [userId, artisanId]
     );
 
-    res.status(201).json({ msg: 'Added to favourites' });
-  } catch (err) { next(err); }
+    res.status(201).json({ msg: "Added to favourites" });
+  } catch (err) {
+    next(err);
+  }
 }
 
 async function removeFavourite(req, res, next) {
   try {
-    const userId = req.user && req.user.id;
-    if (!userId) return res.status(401).json({ msg: "Not authenticated" });
-
+    const userId = req.user.id;
     const artisanId = Number(req.params.id);
-    await db.query('DELETE FROM favourites WHERE user_id = ? AND artisan_id = ?', [userId, artisanId]);
 
-    res.json({ msg: 'Removed from favourites' });
-  } catch (err) { next(err); }
+    await db.query(
+      "DELETE FROM favourites WHERE user_id=? AND artisan_id=?",
+      [userId, artisanId]
+    );
+
+    res.json({ msg: "Removed from favourites" });
+  } catch (err) {
+    next(err);
+  }
 }
 
 module.exports = {

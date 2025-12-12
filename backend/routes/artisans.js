@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const auth = require("../middleware/auth");
 const artisan = require("../controllers/artisanController");
-const userController = require("../controllers/userController");
 
 // -------------------------------
 // ARTISAN CRUD
@@ -14,16 +13,13 @@ router.put("/:id", auth, artisan.update);
 router.delete("/:id", auth, artisan.remove);
 
 // -------------------------------
-// ARTISAN FAVOURITES (MATCHING crafts.js)
+// ARTISAN FAVOURITES
 // -------------------------------
-
-// OPTIONAL GET route (for teacher demo 401 Unauthorized)
-router.get('/:id/favourites', auth, (req, res) => {
-    res.json({ message: "GET favourites is protected. Use POST/DELETE." });
+router.get("/:id/favourites", auth, (req, res) => {
+  res.json({ message: "Use POST or DELETE" });
 });
 
-// REAL favourites (used by frontend)
-router.post('/:id/favourites', auth, artisan.addFavourite);
-router.delete('/:id/favourites', auth, artisan.removeFavourite);
+router.post("/:id/favourites", auth, artisan.addFavourite);
+router.delete("/:id/favourites", auth, artisan.removeFavourite);
 
 module.exports = router;

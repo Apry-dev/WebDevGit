@@ -1,49 +1,120 @@
 const db = require('../utils/db');
 
+/* ===============================
+   GET ALL PRODUCTS
+================================ */
 async function list(req, res, next) {
   try {
-    const [rows] = await db.query('SELECT id, title, description, price, icon FROM products ORDER BY id DESC');
+    const { artisanId } = req.query;
+
+    let sql = `
+      SELECT id, name, description, price, artisan_id
+      FROM products
+      ORDER BY id DESC
+    `;
+    let params = [];
+
+    if (artisanId) {
+      sql = `
+        SELECT id, name, description, price, artisan_id
+        FROM products
+        WHERE artisan_id = ?
+        ORDER BY id DESC
+      `;
+      params = [artisanId];
+    }
+
+    const [rows] = await db.query(sql, params);
     res.json(rows);
-  } catch (err) { next(err); }
+  } catch (err) {
+    next(err);
+  }
 }
 
+/* ===============================
+   GET SINGLE PRODUCT
+================================ */
 async function get(req, res, next) {
   try {
-    const [rows] = await db.query('SELECT * FROM products WHERE id = ?', [req.params.id]);
+    const [rows] = await db.query(
+      'SELECT * FROM products WHERE id = ?',
+      [req.params.id]
+    );
     if (!rows.length) return res.status(404).json({ msg: 'Not found' });
     res.json(rows[0]);
-  } catch (err) { next(err); }
+  } catch (err) {
+    next(err);
+  }
 }
 
-async function addFavourite(req, res, next) {
+/* ===============================
+   CREATE PRODUCT (ARTISAN ONLY)
+================================ */
+async function create(req, res, next) {
   try {
-    if (!req.user || !req.user.id) return res.status(401).json({ msg: 'Not authenticated' });
+    const { name, description, price } = req.body;
+    const userId = req.user.id;
+
+    if (!name || !price) {
+      return res.status(400).json({ msg: 'Missing fields' });
+    }
+
+    // find artisan owned by user
+    const [artisan] = await db.query(
+      'SELECT id FROM artisans WHERE user_id = ?',
+      [userId]
+    );
+
+    if (!artisan.length) {
+      return res.status(403).json({ msg: 'Not an artisan' });
+    }
+
+    const artisanId = artisan[0].id;
+
+    const [result] = await db.query(
+      `INSERT INTO products (name, description, price, artisan_id)
+       VALUES (?, ?, ?, ?)`,
+      [name, description || '', price, artisanId]
+    );
+
+    res.status(201).json({ id: result.insertId });
+  } catch (err) {
+    next(err);
+  }
+}
+
+/* ===============================
+   DELETE PRODUCT (OWNER ONLY)
+================================ */
+async function remove(req, res, next) {
+  try {
     const userId = req.user.id;
     const productId = req.params.id;
-    await db.query('INSERT INTO favourites (user_id, product_id) VALUES (?, ?)', [userId, productId]);
-    res.status(201).json({ msg: 'Added to favourites' });
-  } catch (err) { next(err); }
+
+    const [owner] = await db.query(
+      `
+      SELECT p.id
+      FROM products p
+      JOIN artisans a ON p.artisan_id = a.id
+      WHERE p.id = ? AND a.user_id = ?
+      `,
+      [productId, userId]
+    );
+
+    if (!owner.length) {
+      return res.status(403).json({ msg: 'Unauthorized' });
+    }
+
+    await db.query('DELETE FROM products WHERE id = ?', [productId]);
+    res.json({ msg: 'Product deleted' });
+  } catch (err) {
+    next(err);
+  }
 }
 
-async function addComment(req, res, next) {
-  try {
-    if (!req.user || !req.user.id) return res.status(401).json({ msg: 'Not authenticated' });
-    const userId = req.user.id;
-    const productId = req.params.id;
-    const { text } = req.body;
-    if (!text) return res.status(400).json({ msg: 'Comment text required' });
-    const [result] = await db.query('INSERT INTO comments (user_id, product_id, text) VALUES (?, ?, ?)', [userId, productId, text]);
-    res.status(201).json({ id: result.insertId, user_id: userId, product_id: productId, text });
-  } catch (err) { next(err); }
-}
-
-async function listComments(req, res, next) {
-  try {
-    const [rows] = await db.query('SELECT id, user_id, product_id, text, created_at FROM comments WHERE product_id = ? ORDER BY created_at DESC', [req.params.id]);
-    res.json(rows);
-  } catch (err) { next(err); }
-}
-
-module.exports = { list, get, addFavourite, addComment, listComments };
-
-
+module.exports = {
+  list,
+  get,
+  create,
+  remove
+};

@@ -10,68 +10,84 @@
 
 <body>
 
-<!-- ===================== NAVBAR (EXACT COPY FROM index.html) ===================== -->
 <header class="navbar">
+  <!-- VERSION: 2025-CRAFTS-TEST -->
+<h1 style="color:red;text-align:center;">IF YOU SEE THIS, FILE IS LOADED</h1>
   <div class="logo">Tradition<br>Connect</div>
 
-  <!-- Burger button -->
   <div class="menu-toggle" id="menu-toggle">
-    <span></span>
-    <span></span>
-    <span></span>
+    <span></span><span></span><span></span>
   </div>
 
-  <!-- Main menu -->
   <ul class="nav-links" id="nav-links">
     <li><a href="index.html#home">Home</a></li>
     <li><a class="active" href="crafts.html">Crafts</a></li>
     <li><a href="index.html#map">Map</a></li>
     <li><a href="products.html">Products</a></li>
-
-    <!-- Only visible if logged in -->
-    <li class="auth-only"><a class="private-link" data-href="favourites.html">Favourites</a></li>
-    <li class="auth-only"><a class="private-link" data-href="orders.html">Orders</a></li>
-
+    <li class="auth-only"><a class="private-link" href="favourites.html">Favourites</a></li>
+    <li class="auth-only"><a class="private-link" href="orders.html">Orders</a></li>
     <li><a href="contact.html">Contact</a></li>
-
-    <!-- Log In / Account -->
-    <li><a class="login-btn" href="login.html">Log In</a></li>
+    <li><a href="login.html" class="login-btn">Log In</a></li>
   </ul>
 </header>
-<!-- ============================================================================ -->
 
+<main style="max-width:1200px;margin:3.5rem auto;padding:0 1rem;">
 
-<!-- =============================== PAGE CONTENT =============================== -->
-<main class="content-wrap" style="max-width:1100px;margin:3rem auto;">
-  <h1 style="text-align:center;font-family:'Playfair Display',serif;">Artisans & Crafts</h1>
+  <h1 style="
+    text-align:center;
+    font-family:'Playfair Display',serif;
+    font-size:2.6rem;
+    margin-bottom:2rem;
+  ">
+    Artisans & Crafts
+  </h1>
 
-  <div style="display:flex;gap:1rem;align-items:center;margin:1.25rem 0;">
-    <input id="q" placeholder="Search by artisan name or craft"
-           style="flex:1;padding:0.6rem;border-radius:8px;border:1px solid #ccc;">
-    
+  <!-- SEARCH PANEL -->
+  <div style="
+    max-width:720px;
+    margin:0 auto 3rem auto;
+    padding:1rem;
+    background:#fff;
+    border-radius:14px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    display:flex;
+    gap:0.75rem;
+    align-items:center;
+  ">
+    <input id="q"
+      placeholder="Search artisan, craft, or location"
+      style="
+        flex:1;
+        padding:0.7rem 1rem;
+        border-radius:10px;
+        border:1px solid #ccc;
+        font-size:0.95rem;
+      ">
+
     <select id="filterCraft"
-            style="padding:0.6rem;border-radius:8px;border:1px solid #ccc;">
+      style="
+        padding:0.7rem 0.9rem;
+        border-radius:10px;
+        border:1px solid #ccc;
+        font-size:0.9rem;
+        min-width:150px;
+      ">
       <option value="">All crafts</option>
     </select>
-
-    <button id="search"
-            style="padding:0.6rem 1rem;background:#556B2F;color:#fff;border:none;border-radius:8px;">
-      Search
-    </button>
   </div>
 
+  <!-- RESULTS -->
   <div id="list"
-       class="card-grid"
-       style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;">
+    style="
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:1.5rem;
+    ">
   </div>
+
 </main>
 
-<!-- =============================== SCRIPTS ==================================== -->
-
-<!-- Page logic -->
 <script src="crafts.js"></script>
-
-<!-- GLOBAL navbar + auth logic from index -->
 <script src="script.js"></script>
 
 </body>

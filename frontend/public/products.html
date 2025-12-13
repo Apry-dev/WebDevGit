@@ -4,34 +4,89 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Products — Tradition Connect</title>
+
   <link rel="stylesheet" href="styles/style.css">
 </head>
 
 <body>
-  <header class="navbar">
-    <div class="logo">Tradition<br>Connect</div>
-    <nav class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="products.html" class="active">Products</a>
-    </nav>
-    <a class="login-btn" href="login.html">Log In</a>
-  </header>
 
-  <main class="content-wrap" style="max-width:900px;margin:3rem auto;">
-    <h1 style="text-align:center;font-family:'Playfair Display',serif;">Explore Handcrafted Products</h1>
+<header class="navbar">
+  <div class="logo">Tradition<br>Connect</div>
 
-    <div class="search-bar" style="display:flex;gap:0.5rem;margin-top:2rem;">
-      <input id="q" placeholder="Search products..." 
-        style="flex:1;padding:0.7rem;border-radius:8px;border:1px solid #ccc;">
-      <button id="search" 
-        style="padding:0.7rem 1.5rem;background:#556B2F;color:white;border:none;border-radius:8px;">
-        Search
-      </button>
-    </div>
+  <nav class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="products.html" class="active">Products</a>
+  </nav>
 
-    <div id="results" class="product-grid" style="margin-top:2rem;display:grid;gap:1.5rem;"></div>
-  </main>
+  <a class="login-btn" href="login.html">Log In</a>
+</header>
 
-  <script src="products.js"></script>
+<!-- 🔴 VISUAL DEBUG MARKER -->
+<p style="
+  text-align:center;
+  color:#b00000;
+  font-weight:600;
+  margin-top:1rem;
+">
+  PRODUCTS PAGE — VERSION 2025-TEST
+</p>
+
+<main style="max-width:900px;margin:3.5rem auto;padding:0 1rem;">
+
+  <h1 style="
+    text-align:center;
+    font-family:'Playfair Display',serif;
+    font-size:2.6rem;
+    margin-bottom:0.5rem;
+  ">
+    Handcrafted Products
+  </h1>
+
+  <p style="
+    text-align:center;
+    color:#555;
+    margin-bottom:2.5rem;
+  ">
+    Discover authentic items made by local artisans
+  </p>
+
+  <!-- SEARCH PANEL -->
+  <div style="
+    max-width:520px;
+    margin:0 auto 3rem auto;
+    padding:1rem;
+    background:#ffffff;
+    border-radius:14px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    display:flex;
+    gap:0.75rem;
+    align-items:center;
+  ">
+    <input
+      id="q"
+      placeholder="Search by product name or artisan"
+      style="
+        flex:1;
+        padding:0.7rem 1rem;
+        border-radius:10px;
+        border:1px solid #ccc;
+        font-size:0.95rem;
+      "
+    >
+  </div>
+
+  <!-- RESULTS -->
+  <div
+    id="results"
+    style="
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:1.5rem;
+    "
+  ></div>
+
+</main>
+
+<script src="products.js"></script>
 </body>
 </html>

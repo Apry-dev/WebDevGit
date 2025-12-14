@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Orders — Tradition Connect</title>
+  <title>Incoming Orders — Tradition Connect</title>
 
   <link rel="stylesheet" href="styles/style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
@@ -15,7 +15,7 @@
     }
 
     .orders-container {
-      max-width: 1000px;
+      max-width: 1100px;
       margin: 3.5rem auto;
       padding: 0 1rem;
     }
@@ -29,54 +29,70 @@
 
     .order-card {
       background: #fff;
-      border-radius: 18px;
-      padding: 1.8rem;
+      border-radius: 16px;
+      padding: 1.6rem;
       box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-      margin-bottom: 1.6rem;
+      margin-bottom: 1.5rem;
     }
 
-    .order-meta {
-      font-size: 0.95rem;
-      color: #444;
-      line-height: 1.6;
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+    }
+
+    .order-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
     }
 
     .status {
-      display: inline-block;
-      margin-top: 0.6rem;
-      padding: 0.3rem 0.9rem;
+      padding: 0.35rem 0.9rem;
       border-radius: 999px;
       font-size: 0.8rem;
       font-weight: 500;
       text-transform: capitalize;
+      background: #eee;
     }
 
     .status.pending { background: #fff3cd; color: #856404; }
     .status.accepted { background: #d4edda; color: #155724; }
+    .status.rejected { background: #f8d7da; color: #721c24; }
     .status.shipped { background: #d1ecf1; color: #0c5460; }
-    .status.cancelled { background: #f8d7da; color: #721c24; }
+
+    .order-meta {
+      color: #555;
+      font-size: 0.95rem;
+      margin-bottom: 0.9rem;
+    }
 
     .order-actions {
+      display: flex;
+      gap: 0.6rem;
       margin-top: 1rem;
     }
 
-    .cancel-btn {
-      padding: 0.45rem 1rem;
-      border-radius: 999px;
+    .order-actions button {
+      flex: 1;
+      padding: 0.55rem;
+      border-radius: 10px;
       border: none;
-      background: #b33;
-      color: #fff;
-      font-size: 0.85rem;
       cursor: pointer;
+      font-weight: 500;
     }
 
-    .empty {
+    .accept-btn { background: #556B2F; color: white; }
+    .reject-btn { background: #b33; color: white; }
+    .ship-btn   { background: #1b6ca8; color: white; }
+
+    .empty-orders {
       text-align: center;
       padding: 3rem;
-      background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-      color: #666;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      color: #555;
     }
   </style>
 </head>
@@ -102,11 +118,11 @@
 
 <!-- ===================== CONTENT ===================== -->
 <main class="orders-container">
-  <h1>My Orders</h1>
+  <h1>Incoming Orders</h1>
   <div id="orders">Loading orders…</div>
 </main>
 
 <script src="script.js"></script>
-<script src="orders.js"></script>
+<script src="artisan-orders.js"></script>
 </body>
 </html>

@@ -1,78 +1,160 @@
-// ===== BURGER MENU FUNCTIONALITY =====
+// =======================================================
+// BURGER MENU
+// =======================================================
 const menuToggle = document.getElementById("menu-toggle");
 const navLinks = document.getElementById("nav-links");
 
-// guard elements — only attach listeners if they exist
 if (menuToggle && navLinks) {
   menuToggle.addEventListener("click", () => {
     menuToggle.classList.toggle("active");
     navLinks.classList.toggle("active");
   });
-
-  // close menu on link click
-  navLinks.querySelectorAll("a").forEach(link => {
-    link.addEventListener("click", () => {
-      menuToggle.classList.remove("active");
-      navLinks.classList.remove("active");
-    });
-  });
 }
 
-// ===== AUTH-AWARE NAVBAR =====
+// =======================================================
+// NAV CONFIG — SINGLE SOURCE OF TRUTH
+// =======================================================
+const NAV_ITEMS = {
+  base: [
+    { label: "Home", href: "index.html" },
+    { label: "Crafts", href: "crafts.html" },
+    { label: "Map", href: "index.html#map" },
+    { label: "Products", href: "products.html" }
+  ],
+  favourites: { label: "Favourites", href: "favourites.html" },
+  joinArtisan: { label: "Join as Artisan", href: "join-artisan.html" },
+  dashboard: { label: "My Dashboard", href: "artisan-dashboard.html" }
+};
 
-// define at top-level so listeners can call it
-async function updateAuthNav() {
-  const token = localStorage.getItem('token');
-  let logged = false;
+// =======================================================
+// AUTH + ROLE RESOLUTION (BACKEND = SOURCE OF TRUTH)
+// =======================================================
+async function resolveUserState() {
+  const token = localStorage.getItem("token");
 
-  if (token && token !== 'null' && token !== 'undefined') {
-    try {
-      const res = await fetch('/api/auth/me', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      logged = res.ok;
-      if (!logged) localStorage.removeItem('token');
-    } catch {
-      localStorage.removeItem('token');
-      logged = false;
-    }
+  if (!token || token === "null" || token === "undefined") {
+    return { logged: false };
   }
 
-  // show/hide items meant only for authenticated users
-  document.querySelectorAll('.auth-only').forEach(el => {
-    el.style.display = logged ? '' : 'none';
-  });
+  try {
+    // ---- AUTH CHECK ----
+    const authRes = await fetch("/api/auth/me", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
 
-  // update private links to redirect to login when not logged
-  document.querySelectorAll('a.private-link').forEach(a => {
-    const target = a.dataset.href || a.getAttribute('href') || '';
-    a.href = logged ? target : `login.html?next=${encodeURIComponent(target)}`;
-  });
+    if (!authRes.ok) {
+      localStorage.removeItem("token");
+      return { logged: false };
+    }
 
-  // login button -> account when logged
-  document.querySelectorAll('a.login-btn, button.login-btn').forEach(el => {
-    if (logged) { el.textContent = 'My Account'; el.href = 'account.html'; }
-    else { el.textContent = 'Log In'; el.href = 'login.html'; }
-  });
+    // ---- ARTISAN CHECK ----
+    const artisanRes = await fetch("/api/artisans/me", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (artisanRes.ok) {
+      const artisan = await artisanRes.json();
+      return {
+        logged: true,
+        artisan: !!artisan
+      };
+    }
+
+    return { logged: true, artisan: false };
+
+  } catch (err) {
+    console.error("Auth resolution failed:", err);
+    localStorage.removeItem("token");
+    return { logged: false };
+  }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  updateAuthNav();
+// =======================================================
+// AUTH BUTTON (Log In / My Account — SAME GREEN STYLE)
+// =======================================================
+function updateAuthButton(logged) {
+  const btn = document.getElementById("auth-btn");
+  if (!btn) return;
 
-  // wire Join as Artisan CTA after DOM ready
-  document.querySelectorAll('.cta-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const token = localStorage.getItem('token');
-      if (token && token !== 'undefined' && token !== 'null') {
-        window.location.href = 'join-artisan.html';
-      } else {
-        window.location.href = 'login.html?next=join-artisan.html';
-      }
-    });
+  btn.classList.add("login-btn"); // ✅ ALWAYS green pill
+
+  if (!logged) {
+    btn.textContent = "Log In";
+    btn.href = "login.html";
+  } else {
+    btn.textContent = "My Account";
+    btn.href = "account.html";
+  }
+}
+
+// =======================================================
+// NAV RENDERER (LEFT ITEMS ONLY)
+// =======================================================
+function renderNav(items) {
+  if (!navLinks) return;
+
+  // Preserve auth slot
+  const authSlot = navLinks.querySelector(".auth-slot");
+
+  navLinks.innerHTML = "";
+
+  items.forEach(item => {
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+
+    a.textContent = item.label;
+    a.href = item.href;
+
+    li.appendChild(a);
+    navLinks.appendChild(li);
   });
 
-  // existing burger/menu code is already set up earlier
-});
+  // Auth button ALWAYS last (far right)
+  if (authSlot) {
+    navLinks.appendChild(authSlot);
+  }
+}
 
-// update auth UI if token changes in other tabs
-window.addEventListener('storage', (e) => { if (e.key === 'token') updateAuthNav(); });
+// =======================================================
+// NAV STATE CONTROLLER
+// =======================================================
+async function updateNav() {
+  if (!navLinks) return;
+
+  const state = await resolveUserState();
+  let menu = [...NAV_ITEMS.base];
+
+  // -------- NOT LOGGED IN --------
+  if (!state.logged) {
+    menu.push(NAV_ITEMS.joinArtisan);
+  }
+
+  // -------- LOGGED IN, NOT ARTISAN --------
+  else if (!state.artisan) {
+    menu.push(NAV_ITEMS.favourites);
+    menu.push(NAV_ITEMS.joinArtisan);
+  }
+
+  // -------- LOGGED IN, ARTISAN --------
+  else {
+    menu.push(NAV_ITEMS.favourites);
+    menu.push(NAV_ITEMS.dashboard);
+  }
+
+  renderNav(menu);
+  updateAuthButton(state.logged);
+}
+
+// =======================================================
+// INIT
+// =======================================================
+document.addEventListener("DOMContentLoaded", updateNav);
+
+// =======================================================
+// SYNC BETWEEN TABS (login / logout)
+// =======================================================
+window.addEventListener("storage", e => {
+  if (e.key === "token") {
+    updateNav();
+  }
+});

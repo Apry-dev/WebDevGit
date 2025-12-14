@@ -1,37 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Products — Tradition Connect</title>
-  <link rel="stylesheet" href="styles/style.css">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles/style.css" />
 </head>
 
 <body>
-  <header class="navbar">
-    <div class="logo">Tradition<br>Connect</div>
-    <nav class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="products.html" class="active">Products</a>
-    </nav>
-    <a class="login-btn" href="login.html">Log In</a>
-  </header>
 
-  <main class="content-wrap" style="max-width:900px;margin:3rem auto;">
-    <h1 style="text-align:center;font-family:'Playfair Display',serif;">Explore Handcrafted Products</h1>
+<!-- ================= NAVBAR ================= -->
+<header class="navbar">
+  <div class="logo">Tradition<br>Connect</div>
 
-    <div class="search-bar" style="display:flex;gap:0.5rem;margin-top:2rem;">
-      <input id="q" placeholder="Search products..." 
-        style="flex:1;padding:0.7rem;border-radius:8px;border:1px solid #ccc;">
-      <button id="search" 
-        style="padding:0.7rem 1.5rem;background:#556B2F;color:white;border:none;border-radius:8px;">
-        Search
-      </button>
-    </div>
+  <div class="menu-toggle" id="menu-toggle">
+    <span></span><span></span><span></span>
+  </div>
 
-    <div id="results" class="product-grid" style="margin-top:2rem;display:grid;gap:1.5rem;"></div>
-  </main>
+  <!-- NAVBAR IS JS-CONTROLLED -->
+  <ul class="nav-links" id="nav-links">
+    <!-- AUTH PLACEHOLDER (required by script.js) -->
+    <li class="auth-slot">
+      <a id="auth-btn" href="login.html">Log In</a>
+    </li>
+  </ul>
+</header>
 
-  <script src="products.js"></script>
+<!-- ================= MAIN CONTENT ================= -->
+<main class="content-wrap" style="max-width: 1000px; margin: 4rem auto; padding: 0 1rem;">
+
+  <h1 style="text-align:center; font-family:'Playfair Display', serif;">
+    Explore Handcrafted Products
+  </h1>
+
+  <p style="text-align:center; max-width:600px; margin:1rem auto 2rem;">
+    Discover authentic, handmade products created by skilled Romanian artisans.
+    Each item reflects tradition, care, and cultural heritage.
+  </p>
+
+  <!-- Search -->
+  <div class="search-bar" style="display:flex; gap:0.5rem; max-width:600px; margin:0 auto 2.5rem;">
+    <input
+      id="q"
+      type="text"
+      placeholder="Search products..."
+      style="flex:1; padding:0.7rem 1rem; border-radius:8px; border:1px solid #ccc;"
+    />
+    <button
+      id="search"
+      style="padding:0.7rem 1.5rem; background:#556B2F; color:white; border:none; border-radius:8px; cursor:pointer;"
+    >
+      Search
+    </button>
+  </div>
+
+  <!-- Results -->
+  <div
+    id="results"
+    class="product-grid"
+    style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:1.5rem;"
+  ></div>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <p>© 2025 Tradition Connect — Preserving cultural heritage through technology.</p>
+</footer>
+
+<!-- ================= SCRIPTS ================= -->
+<script src="script.js"></script>
+<script src="products.js"></script>
+
 </body>
 </html>

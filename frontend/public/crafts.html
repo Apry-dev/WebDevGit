@@ -6,73 +6,69 @@
   <title>Crafts — Tradition Connect</title>
 
   <link rel="stylesheet" href="styles/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<!-- ===================== NAVBAR (EXACT COPY FROM index.html) ===================== -->
+<!-- ===================== NAVBAR ===================== -->
 <header class="navbar">
   <div class="logo">Tradition<br>Connect</div>
 
-  <!-- Burger button -->
   <div class="menu-toggle" id="menu-toggle">
-    <span></span>
-    <span></span>
-    <span></span>
+    <span></span><span></span><span></span>
   </div>
 
-  <!-- Main menu -->
+  <!-- NAVBAR IS JS-CONTROLLED -->
   <ul class="nav-links" id="nav-links">
-    <li><a href="index.html#home">Home</a></li>
-    <li><a class="active" href="crafts.html">Crafts</a></li>
-    <li><a href="index.html#map">Map</a></li>
-    <li><a href="products.html">Products</a></li>
-
-    <!-- Only visible if logged in -->
-    <li class="auth-only"><a class="private-link" data-href="favourites.html">Favourites</a></li>
-    <li class="auth-only"><a class="private-link" data-href="orders.html">Orders</a></li>
-
-    <li><a href="contact.html">Contact</a></li>
-
-    <!-- Log In / Account -->
-    <li><a class="login-btn" href="login.html">Log In</a></li>
+    <!-- AUTH PLACEHOLDER (required by script.js) -->
+    <li class="auth-slot">
+      <a id="auth-btn" href="login.html">Log In</a>
+    </li>
   </ul>
 </header>
-<!-- ============================================================================ -->
 
+<!-- ===================== CONTENT ===================== -->
+<main class="content-wrap" style="max-width:1100px;margin:3.5rem auto;padding:0 1rem;">
 
-<!-- =============================== PAGE CONTENT =============================== -->
-<main class="content-wrap" style="max-width:1100px;margin:3rem auto;">
-  <h1 style="text-align:center;font-family:'Playfair Display',serif;">Artisans & Crafts</h1>
+  <h1 style="text-align:center;font-family:'Playfair Display',serif;margin-bottom:1.5rem;">
+    Artisans & Crafts
+  </h1>
 
-  <div style="display:flex;gap:1rem;align-items:center;margin:1.25rem 0;">
-    <input id="q" placeholder="Search by artisan name or craft"
-           style="flex:1;padding:0.6rem;border-radius:8px;border:1px solid #ccc;">
-    
-    <select id="filterCraft"
-            style="padding:0.6rem;border-radius:8px;border:1px solid #ccc;">
+  <!-- SEARCH / FILTER -->
+  <section style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;margin-bottom:2.5rem;">
+    <input
+      id="q"
+      placeholder="Search by artisan, craft or city"
+      style="flex:1;min-width:220px;padding:0.65rem 0.8rem;border-radius:8px;border:1px solid #ccc;"
+    />
+
+    <select
+      id="filterCraft"
+      style="min-width:180px;padding:0.65rem 0.8rem;border-radius:8px;border:1px solid #ccc;"
+    >
       <option value="">All crafts</option>
     </select>
 
-    <button id="search"
-            style="padding:0.6rem 1rem;background:#556B2F;color:#fff;border:none;border-radius:8px;">
+    <button
+      id="search"
+      style="padding:0.65rem 1.2rem;border-radius:8px;border:none;background:#556B2F;color:#fff;cursor:pointer;"
+    >
       Search
     </button>
-  </div>
+  </section>
 
-  <div id="list"
-       class="card-grid"
-       style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;">
-  </div>
+  <!-- RESULTS -->
+  <section
+    id="list"
+    style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;">
+  </section>
+
 </main>
 
-<!-- =============================== SCRIPTS ==================================== -->
-
-<!-- Page logic -->
-<script src="crafts.js"></script>
-
-<!-- GLOBAL navbar + auth logic from index -->
+<!-- ===================== SCRIPTS ===================== -->
 <script src="script.js"></script>
+<script src="crafts.js"></script>
 
 </body>
 </html>

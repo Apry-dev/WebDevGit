@@ -1,7 +1,7 @@
 function initMap() {
   const romania = { lat: 45.9432, lng: 24.9668 };
 
-  // 🔹 Creează harta, centrată pe România
+  // ================= MAP INIT =================
   const map = new google.maps.Map(document.getElementById("map"), {
     zoom: 7.3,
     center: romania,
@@ -12,27 +12,19 @@ function initMap() {
     backgroundColor: "#f8f8f8",
   });
 
-  // 🔹 Stil personalizat - culori mai pronunțate + bordere clare
+  // ================= MAP STYLE =================
   const styledMap = [
     { elementType: "geometry", stylers: [{ color: "#ebe6e0" }] },
     { elementType: "labels.text.fill", stylers: [{ color: "#2e2e2e" }] },
     {
       featureType: "administrative.country",
       elementType: "geometry.stroke",
-      stylers: [
-        { visibility: "on" },
-        { color: "#333333" },
-        { weight: 1.5 },
-      ],
+      stylers: [{ visibility: "on" }, { color: "#333333" }, { weight: 1.5 }],
     },
     {
       featureType: "administrative.province",
       elementType: "geometry.stroke",
-      stylers: [
-        { visibility: "on" },
-        { color: "#666666" },
-        { weight: 0.7 },
-      ],
+      stylers: [{ visibility: "on" }, { color: "#666666" }, { weight: 0.7 }],
     },
     {
       featureType: "landscape.natural",
@@ -59,88 +51,85 @@ function initMap() {
 
   map.setOptions({ styles: styledMap });
 
-  // 🔹 Lista de artizani (ceramică 🏺, croitorie 🧵, costume 🎭)
-  const artisans = [
+  // ================= FALLBACK ARTISANS =================
+  const fallbackArtisans = [
     {
+      id: null,
       position: { lat: 46.77, lng: 23.59 },
       title: "Cluj Pottery Workshop",
       icon: "./assets/icons/pottery.png",
     },
     {
-      position: { lat: 44.43, lng: 26.10 },
+      id: null,
+      position: { lat: 44.43, lng: 26.1 },
       title: "Bucharest Embroidery Studio",
       icon: "./assets/icons/sewing.png",
     },
-    {
-      position: { lat: 47.16, lng: 27.58 },
-      title: "Iași Weaving Atelier",
-      icon: "./assets/icons/sewing.png",
-    },
-    {
-      position: { lat: 45.80, lng: 24.15 },
-      title: "Sibiu Ceramic Collective",
-      icon: "./assets/icons/pottery.png",
-    },
-    {
-      position: { lat: 46.55, lng: 24.56 },
-      title: "Târgu Mureș Traditional Costume Atelier",
-      icon: "./assets/icons/costumes.png",
-    },
-    {
-      position: { lat: 45.02, lng: 24.88 },
-      title: "Râmnicu Vâlcea Folk Dress Studio",
-      icon: "./assets/icons/costumes.png",
-    },
-    {
-      position: { lat: 47.65, lng: 23.58 },
-      title: "Maramureș Folk Clothing Workshop",
-      icon: "./assets/icons/costumes.png",
-    },
   ];
 
-  // fetch artisan records from API — fallback to hardcoded list if error
+  // ================= LOAD ARTISANS FROM API =================
   async function loadRemoteArtisans() {
     try {
-      const res = await fetch('/api/artisans');
-      if (!res.ok) throw new Error('no data');
+      const res = await fetch("/api/artisans");
+      if (!res.ok) throw new Error("API error");
+
       const list = await res.json();
-      return list.map(a => ({
-        position: { lat: Number(a.lat), lng: Number(a.lng) },
-        title: a.title || a.username || 'Artisan',
-        icon: a.icon || `./assets/icons/${a.craft || 'pottery'}.png`
-      }));
+
+      return list
+        .filter(a => a.lat && a.lng)
+        .map(a => ({
+          id: a.id,
+          position: { lat: Number(a.lat), lng: Number(a.lng) },
+          title: a.title || "Artisan",
+          icon: a.icon || `./assets/icons/${a.craft || "pottery"}.png`,
+        }));
     } catch (e) {
-      console.warn('Failed to load artisans from API, using fallback', e);
-      return artisans; // previously declared fallback array
+      console.warn("Using fallback artisans", e);
+      return fallbackArtisans;
     }
   }
 
-  // replace artisans.forEach(...) after fetch
+  // ================= CREATE MARKERS =================
   loadRemoteArtisans().then(list => {
-    list.forEach((artisan) => {
-      // create marker as before
+    list.forEach(artisan => {
       const marker = new google.maps.Marker({
         position: artisan.position,
         map,
         title: artisan.title,
         icon: {
           url: artisan.icon,
-          scaledSize: artisan.icon.includes("sewing") ? new google.maps.Size(36, 36)
-            : artisan.icon.includes("costumes") ? new google.maps.Size(44, 44)
+          scaledSize: artisan.icon.includes("sewing")
+            ? new google.maps.Size(36, 36)
+            : artisan.icon.includes("costumes")
+            ? new google.maps.Size(44, 44)
             : new google.maps.Size(42, 42),
         },
       });
 
       const infoWindow = new google.maps.InfoWindow({
-        content: `<div style="font-family:Inter;font-size:14px;"><strong>${artisan.title}</strong></div>`,
+        content: `
+          <div style="font-family:Inter;font-size:14px;min-width:180px;">
+            <strong>${artisan.title}</strong><br>
+            ${
+              artisan.id
+                ? `<a href="artisan.html?id=${artisan.id}"
+                     style="display:inline-block;margin-top:6px;color:#556B2F;font-weight:500;text-decoration:none;">
+                     View profile →
+                   </a>`
+                : `<span style="color:#888;font-size:12px;">Profile unavailable</span>`
+            }
+          </div>
+        `,
       });
 
-      marker.addListener("click", () => infoWindow.open(map, marker));
+      marker.addListener("click", () => {
+        infoWindow.open(map, marker);
+      });
     });
   });
 }
 
-// 🔹 Încarcă scriptul Google Maps cu API key-ul tău
+// ================= LOAD GOOGLE MAPS =================
 const script = document.createElement("script");
 script.src =
   "https://maps.googleapis.com/maps/api/js?key=AIzaSyCRL61vFE0NYxdJ7h3CSh7AeTqLkfYU_bY&callback=initMap";

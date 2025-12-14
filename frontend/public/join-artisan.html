@@ -102,11 +102,24 @@
 
 <body>
 
+<!-- ===================== NAVBAR ===================== -->
 <header class="navbar">
   <div class="logo">Tradition<br>Connect</div>
-  <a href="index.html" class="login-btn">Back</a>
+
+  <div class="menu-toggle" id="menu-toggle">
+    <span></span><span></span><span></span>
+  </div>
+
+  <!-- NAVBAR IS JS-CONTROLLED -->
+  <ul class="nav-links" id="nav-links">
+    <!-- AUTH PLACEHOLDER (required by script.js) -->
+    <li class="auth-slot">
+      <a id="auth-btn" href="login.html">Log In</a>
+    </li>
+  </ul>
 </header>
 
+<!-- ===================== CONTENT ===================== -->
 <div class="page-container">
   <form id="artisan-form" class="form-box">
     <h2>Join as Artisan</h2>
@@ -142,6 +155,7 @@
   </form>
 </div>
 
+<script src="script.js"></script>
 <script src="join-artisan.js"></script>
 </body>
 </html>

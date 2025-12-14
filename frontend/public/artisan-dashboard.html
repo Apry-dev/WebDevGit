@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Dashboard — Tradition Connect</title>
+
+  <link rel="stylesheet" href="styles/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+
+  <style>
+    body {
+      background: linear-gradient(180deg, #faf8f4 0%, #f4f1e8 100%);
+      font-family: "Inter", sans-serif;
+    }
+
+    .dashboard-container {
+      max-width: 1100px;
+      margin: 3.5rem auto;
+      padding: 0 1rem;
+    }
+
+    h1 {
+      text-align: center;
+      font-family: "Playfair Display", serif;
+      font-size: 2.6rem;
+      margin-bottom: 3rem;
+    }
+
+    .panel {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      margin-bottom: 2rem;
+    }
+
+    .panel h2 {
+      font-family: "Playfair Display", serif;
+      margin-bottom: 0.8rem;
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 1rem;
+      display: block;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.3rem;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      font-size: 0.95rem;
+    }
+
+    textarea {
+      min-height: 100px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.7rem 1.3rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: #556B2F;
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: #333;
+      color: #fff;
+    }
+
+    .dashboard-actions {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .product-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #e0e0e0;
+      padding: 0.9rem 1.1rem;
+      border-radius: 12px;
+      background: #fafafa;
+      margin-bottom: 0.8rem;
+    }
+
+    .delete-btn {
+      background: #b33;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.4rem 0.7rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .empty-products {
+      text-align: center;
+      padding: 2.2rem;
+      border: 1px dashed #ccc;
+      border-radius: 14px;
+      background: #f9f8f4;
+      color: #555;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ===================== NAVBAR ===================== -->
+<header class="navbar">
+  <div class="logo">Tradition<br>Connect</div>
+
+  <div class="menu-toggle" id="menu-toggle">
+    <span></span><span></span><span></span>
+  </div>
+
+  <!-- NAVBAR IS JS-CONTROLLED -->
+  <ul class="nav-links" id="nav-links">
+    <!-- AUTH PLACEHOLDER (required by script.js) -->
+    <li class="auth-slot">
+      <a id="auth-btn" href="login.html">Log In</a>
+    </li>
+  </ul>
+</header>
+
+<!-- ===================== CONTENT ===================== -->
+<div class="dashboard-container">
+  <h1>My Artisan Dashboard</h1>
+
+  <!-- NOT AN ARTISAN -->
+  <div id="no-artisan" class="panel" style="display:none;text-align:center;">
+    <p>You are not registered as an artisan yet.</p>
+    <a href="join-artisan.html" class="btn btn-primary">Become an Artisan</a>
+  </div>
+
+  <!-- DASHBOARD CONTENT -->
+  <div id="dashboard-panel" style="display:none;">
+
+    <!-- ORDERS -->
+    <div class="panel">
+      <h2>Incoming Orders</h2>
+      <p>View and manage orders placed for your products.</p>
+      <a href="artisan-orders.html" class="btn btn-primary">View Orders</a>
+    </div>
+
+    <!-- WORKSHOP -->
+    <div class="panel">
+      <h2>Workshop Details</h2>
+
+      <label>Workshop Name</label>
+      <input id="title"/>
+
+      <label>Craft</label>
+      <input id="craft"/>
+
+      <label>Address</label>
+      <input id="address"/>
+
+      <label>Description</label>
+      <textarea id="bio"></textarea>
+
+      <div class="dashboard-actions">
+        <button id="save-profile" class="btn btn-primary">Save Changes</button>
+      </div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div class="panel">
+      <h2>My Products</h2>
+      <div id="product-list"></div>
+
+      <div class="dashboard-actions">
+        <button id="add-product" class="btn btn-secondary">Add Product</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script src="artisan-dashboard.js"></script>
+</body>
+</html>

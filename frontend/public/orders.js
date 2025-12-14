@@ -1,70 +1,83 @@
-document.addEventListener('DOMContentLoaded', async () => {
-  const token = localStorage.getItem('token');
-  const ordersBox = document.getElementById('orders');
+document.addEventListener("DOMContentLoaded", async () => {
+  const ordersEl = document.getElementById("orders");
+  const token = localStorage.getItem("token");
 
-  async function loadMyOrders() {
-    if (!token || token === "null") {
-      ordersBox.innerHTML = `<p>You must <a href="login.html">log in</a> to see your orders.</p>`;
-      return;
-    }
+  if (!token) {
+    ordersEl.innerHTML =
+      `<div class="empty">
+        <p>You must <a href="login.html">log in</a> to see your orders.</p>
+       </div>`;
+    return;
+  }
 
-    const res = await fetch('/api/orders/me', {
+  async function loadOrders() {
+    const res = await fetch("/api/orders/me", {
       headers: { Authorization: `Bearer ${token}` }
     });
 
     if (!res.ok) {
-      ordersBox.innerHTML = `<p>Error loading orders (${res.status})</p>`;
+      ordersEl.innerHTML = "<p>Failed to load orders.</p>";
       return;
     }
 
-    const list = await res.json();
-    if (!list.length) {
-      ordersBox.innerHTML = `<p>No orders yet.</p>`;
-      return;
-    }
+    const orders = await res.json();
 
-    ordersBox.innerHTML = list.map(o => `
-      <div class="order-card">
-        <h3>Order #${o.id}</h3>
-        <div class="order-meta">
-          <strong>Total:</strong> ${o.total} Lei<br>
-          <strong>Status:</strong> ${o.status}
+    if (!orders.length) {
+      ordersEl.innerHTML = `
+        <div class="empty">
+          <p>You haven’t placed any orders yet.</p>
         </div>
+      `;
+      return;
+    }
+
+    ordersEl.innerHTML = orders.map(o => `
+      <div class="order-card">
+        <div class="order-meta">
+          <div><strong>Product:</strong> ${o.product_name}</div>
+          <div><strong>Artisan:</strong> ${o.artisan_name}</div>
+          <div><strong>Quantity:</strong> ${o.quantity}</div>
+          <div><strong>Total:</strong> ${o.total} RON</div>
+        </div>
+
+        <span class="status ${o.status}">${o.status}</span>
+
+        ${
+          o.status === "pending"
+            ? `<div class="order-actions">
+                 <button class="cancel-btn" data-id="${o.id}">
+                   Cancel Order
+                 </button>
+               </div>`
+            : ""
+        }
       </div>
-    `).join('');
+    `).join("");
+
+    attachCancelHandlers();
   }
 
-  document.getElementById('order-form').addEventListener('submit', async e => {
-    e.preventDefault();
+  function attachCancelHandlers() {
+    document.querySelectorAll(".cancel-btn").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const id = btn.dataset.id;
 
-    if (!token || token === "null") {
-      alert("Please log in first");
-      return;
-    }
+        const ok = confirm("Are you sure you want to cancel this order?");
+        if (!ok) return;
 
-    const pid = document.getElementById('pid').value.trim();
-    const total = Number(document.getElementById('total').value);
+        const res = await fetch(`/api/orders/${id}/cancel`, {
+          method: "PUT",
+          headers: { Authorization: `Bearer ${token}` }
+        });
 
-    const res = await fetch('/api/orders', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        total,
-        items: [{ product_id: pid, qty: 1 }]
-      })
+        if (res.ok) {
+          loadOrders();
+        } else {
+          alert("Failed to cancel order.");
+        }
+      });
     });
+  }
 
-    if (!res.ok) {
-      alert("Failed: " + await res.text());
-      return;
-    }
-
-    alert("Order placed successfully!");
-    loadMyOrders();
-  });
-
-  loadMyOrders();
+  loadOrders();
 });

@@ -3,35 +3,55 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>My favourites — Tradition Connect</title>
+  <title>My Favourites — Tradition Connect</title>
+
   <link rel="stylesheet" href="styles/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 </head>
 
 <body>
-  <!-- NAVBAR -->
-  <header class="navbar">
-    <div class="logo">Tradition<br>Connect</div>
 
-    <nav class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="products.html">Products</a>
-      <a href="crafts.html">Crafts</a>
-      <a href="account.html">Account</a>
-      <a href="favourites.html" class="active">Favourites</a>
-    </nav>
+<!-- ===================== NAVBAR ===================== -->
+<header class="navbar">
+  <div class="logo">Tradition<br>Connect</div>
 
-    <button class="login-btn" onclick="logout()" style="background:#8B0000;">
-      Logout
-    </button>
-  </header>
+  <div class="menu-toggle" id="menu-toggle">
+    <span></span><span></span><span></span>
+  </div>
 
-  <!-- MAIN CONTENT -->
-  <main class="content-wrap" style="max-width:1100px;margin:3rem auto;">
-    <h1 style="text-align:center;">My favourites</h1>
+  <!-- NAVBAR IS JS-CONTROLLED -->
+  <ul class="nav-links" id="nav-links">
+    <!-- AUTH PLACEHOLDER (required by script.js) -->
+    <li class="auth-slot">
+      <a id="auth-btn" href="login.html">Log In</a>
+    </li>
+  </ul>
+</header>
 
-    <div id="content" style="margin-top:2rem;"></div>
-  </main>
+<!-- ===================== CONTENT ===================== -->
+<main class="content-wrap" style="max-width:1100px;margin:3.5rem auto;padding:0 1rem;">
 
-  <script src="favourites.js"></script>
+  <h1
+    style="
+      text-align:center;
+      font-family:'Playfair Display', serif;
+      margin-bottom:2.5rem;
+    ">
+    My Favourites
+  </h1>
+
+  <div
+    id="content"
+    style="
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+      gap:1.5rem;
+    ">
+  </div>
+
+</main>
+
+<script src="script.js"></script>
+<script src="favourites.js"></script>
 </body>
 </html>

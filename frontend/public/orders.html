@@ -1,177 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Orders — Tradition Connect</title>
+  <meta charset="UTF-8" />
+  <title>My Orders — Tradition Connect</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles/style.css">
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Inter, sans-serif;
-      background: #faf8f4;
-      color: #333;
-      display: flex;
-      height: 100vh;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      width: 260px;
-      background: #fff;
-      border-right: 1px solid #e6e3dc;
-      box-shadow: 4px 0 12px rgba(0, 0, 0, 0.05);
-      padding: 2rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .logo {
-      font-family: "Playfair Display", serif;
-      font-size: 1.7rem;
-      margin-bottom: 2rem;
-      line-height: 1.2;
-    }
-
-    .sidebar a {
-      text-decoration: none;
-      color: #555;
-      font-size: 1.1rem;
-      margin: 0.75rem 0;
-      padding: 0.6rem 0.8rem;
-      border-radius: 10px;
-      transition: 0.2s;
-      display: block;
-    }
-    .sidebar a:hover {
-      background: #f0eee9;
-      color: #000;
-    }
-    .sidebar a.active {
-      background: #5a6632;
-      color: white;
-    }
-
-    /* Main content */
-    .main {
-      flex: 1;
-      padding: 3rem 3rem;
-      overflow-y: auto;
-    }
-
-    h1 {
-      font-family: "Playfair Display", serif;
-      font-size: 2.2rem;
-      margin-bottom: 1.2rem;
-      color: #2e2e2e;
-    }
-
-    .orders-list {
-      margin-top: 2rem;
-    }
-
-    .order-card {
-      background: white;
-      padding: 1.8rem;
-      border-radius: 16px;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.07);
-      border: 1px solid #eee;
-    }
-
-    .order-card h3 {
-      margin: 0 0 0.5rem;
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: #222;
-    }
-
-    .order-meta {
-      color: #555;
-      margin-top: 0.5rem;
-      font-size: 1rem;
-    }
-
-    .place-order-box {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.07);
-      margin-top: 2rem;
-      border: 1px solid #eee;
-    }
-
-    label {
-      font-weight: 600;
-      display: block;
-      margin-top: 1rem;
-    }
-
-    input {
-      width: 100%;
-      padding: 0.7rem;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      margin-top: 0.4rem;
-      font-size: 1rem;
-    }
-
-    button {
-      margin-top: 1.5rem;
-      padding: 0.9rem 1.8rem;
-      background: #5a6632;
-      color: white;
-      border-radius: 12px;
-      border: none;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 500;
-      transition: 0.2s ease;
-    }
-
-    button:hover {
-      background: #445024;
-    }
-  </style>
+  <link rel="stylesheet" href="styles/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Inter&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-  <!-- ===================== SIDEBAR ===================== -->
-  <aside class="sidebar">
-    <div class="logo">Tradition<br>Connect</div>
+<header class="navbar">
+  <div class="logo">Tradition<br>Connect</div>
 
-    <a href="account.html">My Account</a>
-    <a href="join-artisan.html">My Workshop</a>
-    <a href="orders.html" class="active">Orders</a>
-    <a href="index.html">Home</a>
-  </aside>
+  <div class="menu-toggle" id="menu-toggle">
+    <span></span><span></span><span></span>
+  </div>
 
-  <!-- ===================== MAIN CONTENT ===================== -->
-  <section class="main">
-    <h1>My Orders</h1>
+  <ul class="nav-links" id="nav-links">
+    <li class="auth-slot">
+      <a id="auth-btn" href="login.html">Log In</a>
+    </li>
+  </ul>
+</header>
 
-    <div id="orders" class="orders-list">Loading orders...</div>
+<main style="max-width:900px;margin:4rem auto;padding:0 1rem;">
+  <h1 style="text-align:center;font-family:'Playfair Display',serif;">
+    My Orders
+  </h1>
 
-    <!-- Demo order creation -->
-    <div class="place-order-box">
-      <h2 style="font-family:Playfair Display;margin-top:0;">Place an Order (demo)</h2>
+  <div id="orders-list" style="margin-top:2rem;"></div>
+</main>
 
-      <form id="order-form">
-        <label>Product ID</label>
-        <input id="pid" required />
-
-        <label>Total Amount (Lei)</label>
-        <input id="total" type="number" min="0" step="0.01" required />
-
-        <button type="submit">Place Order</button>
-      </form>
-    </div>
-  </section>
-
-  <script src="orders.js"></script>
+<script src="script.js"></script>
+<script src="orders.js"></script>
 </body>
 </html>

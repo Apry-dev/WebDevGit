@@ -1,10 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Products — Tradition Connect</title>
 
+<<<<<<< HEAD
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Global styles -->
+  <link rel="stylesheet" href="styles/style.css" />
+</head>
+
+<body style="font-family:'Inter', sans-serif; background:#faf8f4;">
+
+<!-- ================= NAVBAR ================= -->
+<header class="navbar">
+  <div class="logo">Tradition<br>Connect</div>
+
+  <div class="menu-toggle" id="menu-toggle">
+    <span></span><span></span><span></span>
+  </div>
+
+  <ul class="nav-links" id="nav-links">
+    <li class="auth-slot">
+      <a id="auth-btn" href="login.html">Log In</a>
+    </li>
+  </ul>
+</header>
+
+<!-- ================= HERO ================= -->
+<section style="
+  background:linear-gradient(180deg,#f3f1e6,#faf8f4);
+  padding:4rem 1rem 3rem;
+  text-align:center;
+">
+  <h1 style="
+    font-family:'Playfair Display',serif;
+    font-size:2.6rem;
+    margin-bottom:0.8rem;
+  ">
+    Handcrafted Products
+  </h1>
+
+  <p style="
+    max-width:640px;
+    margin:0 auto;
+    color:#555;
+    font-size:1rem;
+  ">
+    Discover authentic, handmade products created by Romanian artisans.
+    Each piece carries tradition, craftsmanship, and care.
+  </p>
+
+  <!-- SEARCH -->
+  <div style="
+    max-width:520px;
+    margin:2.2rem auto 0;
+    display:flex;
+    gap:0.6rem;
+    background:#fff;
+    padding:0.6rem;
+    border-radius:14px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  ">
+    <input
+      id="q"
+      type="text"
+      placeholder="Search products..."
+      style="
+        flex:1;
+        border:none;
+        outline:none;
+        padding:0.7rem 0.9rem;
+        font-size:0.95rem;
+      "
+    />
+    <button
+      id="search"
+      style="
+        padding:0.6rem 1.4rem;
+        border:none;
+        border-radius:10px;
+        background:#556B2F;
+        color:#fff;
+        cursor:pointer;
+        font-size:0.9rem;
+      "
+    >
+      Search
+    </button>
+  </div>
+</section>
+
+<!-- ================= PRODUCTS GRID ================= -->
+<main style="
+  max-width:1100px;
+  margin:3rem auto;
+  padding:0 1rem;
+">
+
+  <div
+    id="results"
+    style="
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:1.6rem;
+    "
+  ></div>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <p>© 2025 Tradition Connect — Preserving cultural heritage through technology.</p>
+</footer>
+
+<!-- ================= SCRIPTS ================= -->
+<script src="script.js"></script>
+<script src="products.js"></script>
+
+=======
   <link rel="stylesheet" href="styles/style.css">
 </head>
 
@@ -88,5 +205,6 @@
 </main>
 
 <script src="products.js"></script>
+>>>>>>> origin/main
 </body>
 </html>

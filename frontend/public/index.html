@@ -7,46 +7,40 @@
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-  
+
   <!-- Styles -->
-    <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/style.css" />
 </head>
 
 <body>
 
+ <div id="top"></div>
+<!-- ===================== NAVBAR ===================== -->
 <header class="navbar">
   <div class="logo">Tradition<br>Connect</div>
 
-  <!-- 🔹 Buton burger -->
   <div class="menu-toggle" id="menu-toggle">
-    <span></span>
-    <span></span>
-    <span></span>
+    <span></span><span></span><span></span>
   </div>
 
-  <!-- 🔹 Meniu principal -->
+  <!-- NAVBAR IS JS-CONTROLLED -->
   <ul class="nav-links" id="nav-links">
-    <li><a href="#home">Home</a></li>
-    <li><a href="crafts.html">Crafts</a></li>
-    <li><a href="#map">Map</a></li>
-    <li><a href="products.html">Products</a></li>
-    <li class="auth-only"><a class="private-link" href="favourites.html" data-href="favourites.html">Favourites</a></li>
-    <li class="auth-only"><a class="private-link" href="orders.html" data-href="orders.html">Orders</a></li>
-    <li><a href="contact.html">Contact</a></li>
-    <li><a href="login.html" class="login-btn">Log In</a></li>
-
+    <!-- AUTH PLACEHOLDER (required by script.js) -->
+    <li class="auth-slot">
+      <a id="auth-btn" href="login.html">Log In</a>
+    </li>
   </ul>
 </header>
 
 
-<!-- 🔹 INTRO STORY SECTION -->
+<!-- ===================== INTRO ===================== -->
 <section class="intro-story">
   <div class="intro-content">
     <div class="intro-text">
       <h2>Preserving traditions, empowering artisans</h2>
       <p>
-        Our platform bridges the gap between Romania’s centuries-old crafts and the modern world.  
-        By connecting artisans, traditions, and technology, we help preserve cultural heritage 
+        Our platform bridges the gap between Romania’s centuries-old crafts and the modern world.
+        By connecting artisans, traditions, and technology, we help preserve cultural heritage
         and inspire a new generation of creators.
       </p>
       <a href="#map" class="learn-more-btn">Explore Map</a>
@@ -57,21 +51,24 @@
   </div>
 </section>
 
-  <!-- 🔹 HERO -->
-  <section class="hero">
-    <h1>Find what you are<br>looking for</h1>
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="home">
+  <h1>Find what you are<br>looking for</h1>
 
-    <div class="map-container">
-      <div class="map-bg"></div>
-      <div id="map"></div>
-    </div>
-  </section>
+  <div class="map-container">
+    <div class="map-bg"></div>
+    <div id="map"></div>
+  </div>
+</section>
 
-  <!-- 🔹 BENEFITS -->
+<!-- ===================== BENEFITS ===================== -->
 <section class="benefits">
   <h5 class="label">Benefits</h5>
   <h2>Empowering cultural heritage through technology.</h2>
-  <p>Our platform connects traditional artisans with a global audience, using modern tools to preserve ancient skills.</p>
+  <p>
+    Our platform connects traditional artisans with a global audience,
+    using modern tools to preserve ancient skills.
+  </p>
 
   <div class="benefit-grid">
     <div class="benefit-item">
@@ -96,22 +93,28 @@
   </div>
 </section>
 
-<!-- 🔹 FOR ARTISANS SECTION -->
+<!-- ===================== FOR ARTISANS ===================== -->
 <section class="for-artisans">
   <div class="artisans-content">
     <div class="artisans-text">
       <h2>For Artisans & Creators</h2>
-      <p>Join a community that values craftsmanship and keeps cultural heritage alive. 
-         TraditionConnect helps you share your story, reach more people, and grow your craft.</p>
-      <button class="cta-btn">Join as Artisan</button>
+      <p>
+        Join a community that values craftsmanship and keeps cultural heritage alive.
+        TraditionConnect helps you share your story, reach more people, and grow your craft.
+      </p>
+
+      <a href="join-artisan.html" class="cta-btn">
+        Join as Artisan
+      </a>
     </div>
+
     <div class="artisans-image">
       <img src="./assets/icons/artisan-working.jpg" alt="Artisan at work">
     </div>
   </div>
 </section>
 
-<!-- 🔹 EXPLORE CRAFTS SECTION -->
+<!-- ===================== EXPLORE ===================== -->
 <section class="explore-crafts">
   <h2>Explore Traditional Crafts</h2>
   <p>Discover the timeless artistry behind Romania’s most cherished crafts.</p>
@@ -143,13 +146,13 @@
   </div>
 </section>
 
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <p>© 2025 Tradition Connect — Preserving cultural heritage through technology.</p>
+</footer>
 
-  <!-- 🔹 FOOTER -->
-  <footer>
-    <p>© 2025 Tradition Connect — Preserving cultural heritage through technology.</p>
-  </footer>
-
-  <script defer src="map.js"></script>
-  <script src="script.js"></script>
+<!-- Scripts -->
+<script defer src="map.js"></script>
+<script defer src="script.js"></script>
 </body>
 </html>

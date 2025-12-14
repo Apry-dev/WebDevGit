@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Order Product — Tradition Connect</title>
+
+  <link rel="stylesheet" href="styles/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+
+  <style>
+    body {
+      background: linear-gradient(180deg, #faf8f4 0%, #f4f1e8 100%);
+      font-family: "Inter", sans-serif;
+    }
+
+    .order-container {
+      max-width: 520px;
+      margin: 4rem auto;
+      background: #fff;
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      font-family: "Playfair Display", serif;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 1.2rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.7rem;
+      margin-top: 0.3rem;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      margin-top: 2rem;
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 999px;
+      border: none;
+      background: #556B2F;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="logo">Tradition<br>Connect</div>
+
+  <div class="menu-toggle" id="menu-toggle">
+    <span></span><span></span><span></span>
+  </div>
+
+  <ul class="nav-links" id="nav-links">
+    <li class="auth-slot">
+      <a id="auth-btn" href="login.html">Log In</a>
+    </li>
+  </ul>
+</header>
+
+<main class="order-container">
+  <h1>Order Product</h1>
+
+  <div id="product-info"></div>
+
+  <form id="order-form">
+    <label>Quantity</label>
+    <input id="quantity" type="number" min="1" value="1" required />
+
+    <button type="submit">Confirm Order</button>
+  </form>
+</main>
+
+<script src="script.js"></script>
+<script src="order-product.js"></script>
+</body>
+</html>

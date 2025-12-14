@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Incoming Orders — Tradition Connect</title>
+
+  <link rel="stylesheet" href="styles/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+
+  <style>
+    body {
+      background: linear-gradient(180deg, #faf8f4 0%, #f4f1e8 100%);
+      font-family: "Inter", sans-serif;
+    }
+
+    .orders-container {
+      max-width: 1100px;
+      margin: 3.5rem auto;
+      padding: 0 1rem;
+    }
+
+    h1 {
+      text-align: center;
+      font-family: "Playfair Display", serif;
+      font-size: 2.4rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .order-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.6rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+    }
+
+    .order-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .status {
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-transform: capitalize;
+      background: #eee;
+    }
+
+    .status.pending { background: #fff3cd; color: #856404; }
+    .status.accepted { background: #d4edda; color: #155724; }
+    .status.rejected { background: #f8d7da; color: #721c24; }
+    .status.shipped { background: #d1ecf1; color: #0c5460; }
+
+    .order-meta {
+      color: #555;
+      font-size: 0.95rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .order-actions {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+
+    .order-actions button {
+      flex: 1;
+      padding: 0.55rem;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .accept-btn { background: #556B2F; color: white; }
+    .reject-btn { background: #b33; color: white; }
+    .ship-btn   { background: #1b6ca8; color: white; }
+
+    .empty-orders {
+      text-align: center;
+      padding: 3rem;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      color: #555;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ===================== NAVBAR ===================== -->
+<header class="navbar">
+  <div class="logo">Tradition<br>Connect</div>
+
+  <div class="menu-toggle" id="menu-toggle">
+    <span></span><span></span><span></span>
+  </div>
+
+  <!-- NAVBAR IS JS-CONTROLLED -->
+  <ul class="nav-links" id="nav-links">
+    <!-- AUTH PLACEHOLDER (required by script.js) -->
+    <li class="auth-slot">
+      <a id="auth-btn" href="login.html">Log In</a>
+    </li>
+  </ul>
+</header>
+
+<!-- ===================== CONTENT ===================== -->
+<main class="orders-container">
+  <h1>Incoming Orders</h1>
+  <div id="orders">Loading orders…</div>
+</main>
+
+<script src="script.js"></script>
+<script src="artisan-orders.js"></script>
+</body>
+</html>

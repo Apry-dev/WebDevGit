@@ -1,190 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Account — Tradition Connect</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Account — Tradition Connect</title>
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
 
-  <!-- Global Styles -->
-  <link rel="stylesheet" href="styles/style.css" />
   <style>
-    /* ===== ACCOUNT PAGE STYLING ===== */
     body {
       background: linear-gradient(180deg, #faf8f4 0%, #f4f1e8 100%);
       font-family: "Inter", sans-serif;
     }
 
     .account-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 5rem 1rem;
+      max-width: 900px;
+      margin: 3.5rem auto;
+      padding: 0 1rem;
     }
 
-    .account-box {
-      background: #fff;
-      width: 100%;
-      max-width: 550px;
-      padding: 3rem 2.5rem;
-      border-radius: 18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-      animation: fadeIn 0.8s ease-out;
-    }
-
-    .account-box h2 {
+    h1 {
       font-family: "Playfair Display", serif;
       font-size: 2.6rem;
-      color: #2e2e2e;
-      margin-bottom: 1.2rem;
       text-align: center;
+      margin-bottom: 3rem;
     }
 
-    .account-box p.subtitle {
-      text-align: center;
-      color: #666;
-      font-size: 1.05rem;
+    .panel {
+      background: #fff;
+      padding: 2.2rem;
+      border-radius: 18px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
       margin-bottom: 2rem;
     }
 
-    .account-box input {
+    .panel h2 {
+      font-family: "Playfair Display", serif;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 1rem;
+    }
+
+    input {
       width: 100%;
-      padding: 0.9rem 1.1rem;
-      margin-bottom: 1.2rem;
-      border: 1px solid #ddd;
+      padding: 0.75rem;
+      margin-top: 0.3rem;
       border-radius: 10px;
-      font-size: 1rem;
-      transition: 0.3s border ease;
+      border: 1px solid #ddd;
+      font-size: 0.95rem;
     }
 
-    .account-box input:focus {
-      border-color: #5a6632;
-      outline: none;
-    }
-
-    .save-btn {
-      background-color: #5a6632;
-      color: #fff;
-      border: none;
-      border-radius: 30px;
-      padding: 0.9rem 2rem;
-      width: 100%;
-      font-size: 1.1rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.3s ease;
-      margin-top: 0.5rem;
-    }
-
-    .save-btn:hover {
-      background-color: #445024;
-    }
-
-    .danger-btn,
-    .logout-btn {
-      width: 48%;
-      padding: 0.9rem 1rem;
-      border-radius: 25px;
-      border: none;
-      font-size: 1rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: 0.3s;
-      color: #fff;
-    }
-
-    .logout-btn {
-      background: #777;
-    }
-
-    .logout-btn:hover {
-      background: #555;
-    }
-
-    .danger-btn {
-      background: #b33;
-    }
-
-    .danger-btn:hover {
-      background: #922;
-    }
-
-    .button-row {
+    .btn-row {
       display: flex;
-      justify-content: space-between;
+      gap: 0.8rem;
       margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.7rem 1.4rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      background: #556B2F;
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: #777;
+      color: #fff;
+    }
+
+    .btn-danger {
+      background: #b33;
+      color: #fff;
     }
 
     #feedback {
       margin-top: 1rem;
-      text-align: center;
       font-size: 0.95rem;
-      color: #b33;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Back button styling */
-    .back-btn {
-      position: absolute;
-      top: 1.5rem;
-      left: 1.5rem;
-      display: flex;
-      align-items: center;
-      font-size: 0.9rem;
-      color: #5a6632;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    .back-btn:hover {
-      color: #445024;
-    }
-
-    .back-btn svg {
-      margin-right: 0.5rem;
+      text-align: center;
     }
   </style>
 </head>
+
 <body>
-  <!-- back arrow — returns straight to the homepage -->
-  <a class="back-btn" href="index.html" aria-label="Back to home">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
-    Back
-  </a>
 
-  <main class="account-container">
-    <div class="account-box">
-      <h2>Your Account</h2>
-      <p class="subtitle">Manage your profile and update your information.</p>
+<!-- ===================== NAVBAR ===================== -->
+<header class="navbar">
+  <div class="logo">Tradition<br>Connect</div>
 
-      <form id="account-form">
-        <input type="text" id="name" placeholder="Full Name" required />
-        <input type="email" id="email" placeholder="Email Address" required />
+  <div class="menu-toggle" id="menu-toggle">
+    <span></span><span></span><span></span>
+  </div>
 
-        <hr style="margin: 2rem 0; border: 0; border-top: 1px solid #e2e2e2;">
+  <!-- NAVBAR IS JS-CONTROLLED -->
+  <ul class="nav-links" id="nav-links">
+    <!-- AUTH PLACEHOLDER (required by script.js) -->
+    <li class="auth-slot">
+      <a id="auth-btn" href="login.html">Log In</a>
+    </li>
+  </ul>
+</header>
 
-        <input type="password" id="password" placeholder="New Password (optional)" />
-        <input type="password" id="passwordConfirm" placeholder="Confirm New Password" />
 
-        <button type="submit" class="save-btn">Save Changes</button>
-      </form>
+<!-- ===================== CONTENT ===================== -->
+<main class="account-container">
 
-      <div class="button-row">
-        <button id="logout-btn" class="logout-btn">Log Out</button>
-        <button id="delete-btn" class="danger-btn">Delete Account</button>
+  <h1>My Account</h1>
+
+  <!-- PROFILE -->
+  <div class="panel">
+    <h2>Profile Information</h2>
+
+    <form id="account-form">
+      <label>Full Name</label>
+      <input type="text" id="name" required />
+
+      <label>Email Address</label>
+      <input type="email" id="email" required />
+
+      <hr style="margin:2rem 0;border:none;border-top:1px solid #eee;">
+
+      <label>New Password</label>
+      <input type="password" id="password" placeholder="Leave empty to keep current" />
+
+      <label>Confirm New Password</label>
+      <input type="password" id="passwordConfirm" />
+
+      <div class="btn-row">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
       </div>
+    </form>
 
-      <p id="feedback"></p>
-    </div>
-  </main>
+    <p id="feedback"></p>
+  </div>
 
-  <script src="script.js"></script>
-  <script src="account.js"></script>
+  <!-- ACCOUNT ACTIONS -->
+  <div class="panel">
+    <h2>Account Actions</h2>
+
+
+  <button id="logout-btn" class="btn btn-secondary">
+    Log Out
+  </button>
+
+  <button id="delete-btn" class="btn btn-danger">
+    Delete Account
+  </button>
+</div>
+
+  </div>
+
+</main>
+
+<script src="script.js"></script>
+<script src="account.js"></script>
 </body>
 </html>

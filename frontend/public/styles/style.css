@@ -874,3 +874,19 @@ body {
 }
 .back-btn svg { display:block; transform: translateX(-1px); }
 .back-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(0,0,0,0.08); }
+/* ===== AUTH BUTTON POSITIONING ===== */
+.auth-slot {
+  margin-left: auto; /* pushes button to far right */
+}
+
+/* Logged in: normal link */
+#auth-btn.account {
+  background: none;
+  padding: 0;
+  color: #000;
+  font-size: 1.1rem;
+}
+
+#auth-btn.account:hover {
+  color: #5a6632;
+}

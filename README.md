@@ -96,7 +96,7 @@ APPLICATION INSTALLATION
 3. Install dependencies:
 
    npm install
-
+   install cookies dependencies
 
 ----------------------------------------
 RUNNING THE APPLICATION

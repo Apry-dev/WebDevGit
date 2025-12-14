@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("../utils/db");
 const auth = require('../middleware/auth');
-const userController = require('../controllers/userController'); // create/adjust
+const userController = require('../controllers/userController'); 
 
 // POST /api/auth/signup
 router.post("/signup", async (req, res) => {

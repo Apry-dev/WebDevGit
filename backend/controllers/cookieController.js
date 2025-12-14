@@ -2,8 +2,8 @@
 
 function acceptCookies(req, res) {
   res.cookie('cookieConsent', 'true', {
-    maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-    httpOnly: true,   // backend-managed
+    maxAge: 1000 * 60 * 60 * 24 * 365, 
+    httpOnly: true,  
     sameSite: 'lax'
   });
 

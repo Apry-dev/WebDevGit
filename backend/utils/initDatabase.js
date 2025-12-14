@@ -31,7 +31,6 @@ class DatabaseInitializer {
         try {
             const dbName = process.env.DB_NAME || 'traditionconnect';
             
-            // Check if database exists
             const [rows] = await this.connection.promise().query(
                 `SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?`,
                 [dbName]
@@ -44,7 +43,6 @@ class DatabaseInitializer {
                 console.log(`Database '${dbName}' already exists`);
             }
 
-            // Use the database
             await this.connection.promise().query(`USE ${dbName}`);
             console.log(`Using database '${dbName}'`);
             
@@ -67,7 +65,6 @@ class DatabaseInitializer {
 
             const schema = fs.readFileSync(schemaPath, 'utf8');
             
-            // Split by semicolon and filter out empty statements
             const statements = schema
                 .split(';')
                 .map(stmt => stmt.trim())
@@ -96,7 +93,6 @@ class DatabaseInitializer {
 
     async seedDatabase() {
         try {
-            // Add sample data
             const sampleData = [
                 {
                     table: 'artisans',
@@ -183,7 +179,6 @@ class DatabaseInitializer {
     }
 }
 
-// Run initialization if this file is executed directly
 if (require.main === module) {
     const initializer = new DatabaseInitializer();
     

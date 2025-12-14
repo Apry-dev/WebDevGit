@@ -76,7 +76,6 @@ async function create(req, res, next) {
 
     const artisanId = artisan[0].id;
 
-    // ✅ IMAGE PATH (NULL SAFE)
     const imagePath = req.file
       ? `/uploads/products/${req.file.filename}`
       : null;

@@ -35,7 +35,6 @@ async function create(req, res, next) {
 	}
 }
 
-// generic update (not protected)
 async function update(req, res, next) {
 	try {
 		const updated = await User.updateUser(req.params.id, req.body);
@@ -70,11 +69,8 @@ async function register(req, res, next) {
 	}
 }
 
-// Protected helpers used by routes that require auth
 async function getMe(req, res) {
-	// req.user is set by auth middleware
 	if (!req.user) return res.status(401).json({ msg: 'Not authenticated' });
-	// return a safe subset
 	const { id, username, email, role } = req.user;
 	res.json({ id, username, email, role });
 }
@@ -82,18 +78,15 @@ async function getMe(req, res) {
 async function updateUser(req, res) {
 	try {
 		if (!req.user) return res.status(401).json({ msg: 'Not authenticated' });
-		// allow user to update only their own account
 		if (Number(req.user.id) !== Number(req.params.id)) return res.status(403).json({ msg: 'Not allowed' });
 
 		const { username, email, password } = req.body;
-		// update username/email via model
 		const updates = {};
 		if (username) updates.username = username;
 		if (email) updates.email = email;
 
 		const updated = await User.updateUser(req.params.id, updates);
 
-		// if password provided, update separately
 		if (password) {
 			const hashed = await bcrypt.hash(password, 10);
 			await db.query('UPDATE users SET password = ? WHERE id = ?', [hashed, req.params.id]);

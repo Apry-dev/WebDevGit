@@ -15,7 +15,6 @@ html, body {
   line-height: 1.6;
 }
 
-/* Un shadow discret în loc de borduri vizibile */
 body {
   box-shadow: inset 0 0 0 10px rgba(160, 160, 160, 0.05);
 }
@@ -51,7 +50,7 @@ body {
   text-decoration: none;
   color: #000;
   font-weight: 500;
-  font-size: 1.1rem; /* 🔸 Mai mare și clar */
+  font-size: 1.1rem; 
 }
 
 .nav-links a:hover {
@@ -94,7 +93,7 @@ body {
   transition: 0.3s ease;
 }
 
-/* 🔹 animația pentru X */
+/*  animația pentru X */
 .menu-toggle.active span:nth-child(1) {
   transform: rotate(45deg) translateY(8px);
 }
@@ -105,7 +104,7 @@ body {
   transform: rotate(-45deg) translateY(-8px);
 }
 
-/* 🔹 comportament pe ecrane mici */
+/*  comportament pe ecrane mici */
 @media (max-width: 900px) {
   .menu-toggle {
     display: flex;
@@ -138,7 +137,7 @@ body {
 }
 
 
-/* 🔹 INTRO STORY SECTION */
+/*  INTRO STORY SECTION */
 .intro-story {
   background-color: #f9f7f3;
   padding: 6rem 10%;
@@ -204,10 +203,10 @@ body {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* 🔹 Responsive for mobile */
+/* Responsive for mobile */
 @media (max-width: 768px) {
   .intro-content {
-    flex-direction: column-reverse; /* imaginea deasupra textului */
+    flex-direction: column-reverse; 
     text-align: center;
   }
 
@@ -240,7 +239,7 @@ body {
 }
 
 
-/* -------- MAP SECTION (actualizat + animat + responsive) -------- */
+/* -------- MAP SECTION -------- */
 .map-container {
   position: relative;
   display: flex;
@@ -255,7 +254,6 @@ body {
   animation: fadeInUp 1.2s ease-out;
 }
 
-/* fundalul verde */
 .map-bg {
   position: absolute;
   width: 100%;
@@ -276,7 +274,7 @@ body {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
-/* harta propriu-zisă */
+/* map */
 #map {
   position: relative;
   width: 85%;
@@ -291,7 +289,7 @@ body {
   animation-delay: 0.3s;
 }
 
-/* -------- Responsive pentru ecrane mai mici -------- */
+/* -------- Responsive for small screens -------- */
 @media (max-width: 1024px) {
   .map-container {
     margin: 3rem auto;
@@ -422,7 +420,7 @@ body {
 }
 
 .benefit-item:hover h4 {
-  color: #5a6632; /* schimbă culoarea la hover */
+  color: #5a6632;
 }
 
 .benefit-item p {
@@ -528,7 +526,7 @@ footer {
   color: #666;
 }
 
-/* 🔹 CRAFT DETAIL PAGE STYLING */
+/*  CRAFT DETAIL PAGE STYLING */
 .craft-detail {
   text-align: center;
   padding: 5rem 2rem;
@@ -586,7 +584,7 @@ footer {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* 🔹 FOR ARTISANS SECTION */
+/*  FOR ARTISANS SECTION */
 .for-artisans {
   background-color: #f4f1e8;
   padding: 100px 10%;
@@ -652,7 +650,7 @@ footer {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* 🔹 Default = mobile-first (telefoane) */
+/*  Default = mobile-first (telefoane) */
 
 body {
   margin: 0;
@@ -714,7 +712,7 @@ body {
   border-radius: 10px;
 }
 
-/* 🔹 Default = mobile-first (telefoane) */
+/*  Default = mobile-first (telefoane) */
 body {
   margin: 0;
   padding: 0;
@@ -736,7 +734,6 @@ body {
   gap: 0.5rem;
 }
 
-/* Hero text mai mic pe mobil */
 .hero h1 {
   font-size: 2rem;
   text-align: center;
@@ -760,10 +757,10 @@ body {
   align-items: center;
 }
 
-/* For Artisans stacked pe mobil (imaginea deasupra textului) */
+/* For Artisans stacked mobile */
 .for-artisans .artisans-content {
   display: flex;
-  flex-direction: column-reverse; /* ✅ imaginea deasupra textului */
+  flex-direction: column-reverse; 
   align-items: center;
   text-align: center;
   gap: 1.5rem;
@@ -779,7 +776,7 @@ body {
 }
 
 
-/* 🔹 Medium screens (tablete >= 768px) */
+/*  Medium screens (tablete >= 768px) */
 @media (min-width: 768px) {
   body {
     /* border-left: 12px solid #bcbcbc;
@@ -812,7 +809,7 @@ body {
   }
 
   .for-artisans .artisans-content {
-    flex-direction: row; /* ✅ pe ecrane medii/largi: text + imagine orizontal */
+    flex-direction: row; 
     justify-content: space-around;
     align-items: center;
     text-align: left;
@@ -823,7 +820,7 @@ body {
   }
 }
 
-/* 🔹 Large screens (desktop >= 1200px) */
+/*  Large screens (desktop >= 1200px) */
 @media (min-width: 1200px) {
   body {
     /* border-left: 16px solid #a0a0a0;
@@ -876,10 +873,9 @@ body {
 .back-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(0,0,0,0.08); }
 /* ===== AUTH BUTTON POSITIONING ===== */
 .auth-slot {
-  margin-left: auto; /* pushes button to far right */
+  margin-left: auto; 
 }
 
-/* Logged in: normal link */
 #auth-btn.account {
   background: none;
   padding: 0;

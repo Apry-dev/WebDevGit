@@ -3,12 +3,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   const feedback = document.getElementById("feedback");
   const form = document.getElementById("add-product-form");
 
+  // ================= AUTH GUARD =================
   if (!token) {
     window.location.href = "login.html?next=add-product.html";
     return;
   }
 
-  // Ensure user is artisan
+  // ================= ENSURE ARTISAN =================
   try {
     const res = await fetch("/api/artisans/me", {
       headers: { Authorization: `Bearer ${token}` }
@@ -23,16 +24,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
+  // ================= SUBMIT HANDLER =================
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     feedback.textContent = "";
 
-    const name = document.getElementById("name").value.trim();
-    const category = document.getElementById("category").value.trim();
-    const price = document.getElementById("price").value;
-    const description = document.getElementById("description").value.trim();
+    // 🔑 IMPORTANT: Use FormData for file upload
+    const formData = new FormData(form);
 
-    if (!name || !category || !price) {
+    // Basic client-side validation
+    if (
+      !formData.get("name") ||
+      !formData.get("category") ||
+      !formData.get("price") ||
+      !formData.get("image")
+    ) {
       feedback.textContent = "Please complete all required fields.";
       return;
     }
@@ -41,10 +47,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       const res = await fetch("/api/products", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          // ❌ DO NOT set Content-Type manually
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ name, category, price, description })
+        body: formData
       });
 
       const data = await res.json().catch(() => ({}));
@@ -54,8 +60,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
+      // ✅ SUCCESS
       window.location.href = "artisan-dashboard.html";
-    } catch {
+
+    } catch (err) {
+      console.error(err);
       feedback.textContent = "Network error. Please try again.";
     }
   });

@@ -4,7 +4,7 @@ require('dotenv').config();
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
-const cookieParser = require("cookie-parser"); // ✅ ADDED
+const cookieParser = require("cookie-parser");
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3001;
@@ -23,10 +23,21 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // ===============================
-// STATIC FRONTEND
+// STATIC FILES
 // ===============================
+
+// Frontend
 app.use(express.static(path.join(__dirname, "../frontend/public")));
 
+// ✅ PRODUCT IMAGES (VERY IMPORTANT)
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads"))
+);
+
+// ===============================
+// STATIC PAGES
+// ===============================
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/public/index.html"));
 });
@@ -48,7 +59,7 @@ app.get("/woodcraft", (req, res) => {
 });
 
 // ===============================
-// API ROUTES (ORDER MATTERS)
+// API ROUTES
 // ===============================
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
@@ -63,8 +74,8 @@ app.use("/api/cookies", require("./routes/cookies"));
 try {
   const userCtrl = require("./controllers/userController");
   app.post("/register", userCtrl.register);
-} catch (err) {
-  // Optional controller — do not crash
+} catch {
+  // optional
 }
 
 // ===============================
@@ -97,7 +108,10 @@ function listenWithRetry(startPort, maxAttempts = 5) {
     });
 
     server.on("error", (err) => {
-      if ((err.code === "EADDRINUSE" || err.code === "EACCES") && attempts < maxAttempts) {
+      if (
+        (err.code === "EADDRINUSE" || err.code === "EACCES") &&
+        attempts < maxAttempts
+      ) {
         attempts++;
         port++;
         console.warn(`⚠️ Port busy, retrying on ${port}...`);

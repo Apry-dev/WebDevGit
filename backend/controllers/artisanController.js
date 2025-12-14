@@ -101,12 +101,10 @@ async function create(req, res, next) {
   try {
     const { title, craft, address } = req.body;
 
-    // 1️⃣ Basic validation
     if (!title || !craft || !address) {
       return res.status(400).json({ msg: "Missing fields" });
     }
 
-    // 2️⃣ Guard: user already has artisan
     const [existing] = await db.query(
       "SELECT id FROM artisans WHERE user_id=?",
       [req.user.id]
@@ -118,7 +116,6 @@ async function create(req, res, next) {
       });
     }
 
-    // 3️⃣ Geocode address (Node 18+ native fetch)
     const geoRes = await fetch(
       `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(
         address
@@ -134,7 +131,6 @@ async function create(req, res, next) {
     const lng = geo[0].lon;
     const icon = `assets/icons/${craft}.png`;
 
-    // 4️⃣ Insert artisan
     const [result] = await db.query(
       `INSERT INTO artisans (user_id, name, bio, location, lat, lng, icon)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,

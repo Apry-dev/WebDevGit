@@ -32,7 +32,80 @@
   </ul>
 </header>
 
+<!-- =====================COOKIE CONSENT BANNER===================== -->
+<style>
+  /* ================= COOKIE CONSENT ================= */
+  .cookie-consent-banner {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 900px;
+    width: calc(100% - 2rem);
 
+    background: #ffffff;
+    color: #444;
+
+    padding: 1.2rem 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    font-family: "Inter", sans-serif;
+    z-index: 9999;
+  }
+
+  .cookie-consent-banner p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #555;
+  }
+
+  .cookie-consent-banner button {
+    padding: 0.6rem 1.4rem;
+    border-radius: 999px;
+    border: none;
+
+    background: #556B2F;
+    color: #fff;
+
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+
+    transition: background 0.2s ease, transform 0.1s ease;
+  }
+
+  .cookie-consent-banner button:hover {
+    background: #465a27;
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 640px) {
+    .cookie-consent-banner {
+      flex-direction: column;
+      align-items: stretch;
+      text-align: center;
+    }
+
+    .cookie-consent-banner button {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="cookie-consent-banner" id="cookie-consent-banner">
+  <p>
+    We use cookies to enhance your experience on our website. By continuing to browse, you agree to our use of cookies.
+  </p>
+  <button id="accept-cookies-btn">Accept</button>
+</div>  
 <!-- ===================== INTRO ===================== -->
 <section class="intro-story">
   <div class="intro-content">

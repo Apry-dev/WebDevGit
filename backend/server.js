@@ -4,6 +4,7 @@ require('dotenv').config();
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser"); // ✅ ADDED
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3001;
@@ -12,9 +13,14 @@ const HOST = process.env.HOST || "127.0.0.1";
 // ===============================
 // CORE MIDDLEWARE
 // ===============================
-app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // ===============================
 // STATIC FRONTEND
@@ -48,7 +54,8 @@ app.use("/api/auth", require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/artisans", require("./routes/artisans"));
 app.use("/api/products", require("./routes/products"));
-app.use("/api/orders", require("./routes/orders")); // ✅ FIXED LOCATION
+app.use("/api/orders", require("./routes/orders"));
+app.use("/api/cookies", require("./routes/cookies"));
 
 // ===============================
 // LEGACY SUPPORT

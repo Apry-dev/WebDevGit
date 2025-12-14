@@ -146,6 +146,45 @@ async function updateNav() {
 }
 
 // =======================================================
+// COOKIE CONSENT BANNER (ONE-TIME, SERVER-DRIVEN)
+// =======================================================
+document.addEventListener('DOMContentLoaded', async () => {
+  const banner = document.getElementById('cookie-consent-banner');
+  const btn = document.getElementById('accept-cookies-btn');
+
+  if (!banner || !btn) return;
+
+  try {
+    const res = await fetch('/api/cookies/consent', {
+      credentials: 'include' // ✅ REQUIRED
+    });
+
+    const data = await res.json();
+
+    if (!data.consent) {
+      banner.style.display = 'flex';
+    } else {
+      banner.remove();
+    }
+  } catch (err) {
+    console.warn('Cookie consent check failed:', err);
+  }
+
+  btn.addEventListener('click', async () => {
+    try {
+      await fetch('/api/cookies/consent', {
+        method: 'POST',
+        credentials: 'include' // ✅ REQUIRED
+      });
+
+      banner.remove();
+    } catch (err) {
+      console.warn('Cookie consent save failed:', err);
+    }
+  });
+});
+
+// =======================================================
 // INIT
 // =======================================================
 document.addEventListener("DOMContentLoaded", updateNav);

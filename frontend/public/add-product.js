@@ -29,10 +29,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault();
     feedback.textContent = "";
 
-    // 🔑 IMPORTANT: Use FormData for file upload
     const formData = new FormData(form);
 
-    // Basic client-side validation
     if (
       !formData.get("name") ||
       !formData.get("category") ||
@@ -47,7 +45,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       const res = await fetch("/api/products", {
         method: "POST",
         headers: {
-          // ❌ DO NOT set Content-Type manually
           Authorization: `Bearer ${token}`
         },
         body: formData
@@ -60,7 +57,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
-      // ✅ SUCCESS
       window.location.href = "artisan-dashboard.html";
 
     } catch (err) {

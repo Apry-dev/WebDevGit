@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // ✅ SUPPORT MULTIPLE BACKEND TOKEN SHAPES
       const token =
         data.token ||
         data.accessToken ||
@@ -35,10 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // ✅ STORE TOKEN
       localStorage.setItem("token", token);
 
-      // ✅ REDIRECT (supports ?next=)
       const params = new URLSearchParams(window.location.search);
       const next = params.get("next");
 

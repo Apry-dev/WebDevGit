@@ -28,7 +28,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const artisan = await res.json();
 
-    // 🔒 HARD CONTRACT — NO FALLBACKS
     if (!artisan.id) {
       throw new Error('Invalid artisan payload: missing id');
     }

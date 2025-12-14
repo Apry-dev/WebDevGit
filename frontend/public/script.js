@@ -76,7 +76,7 @@ function updateAuthButton(logged) {
   const btn = document.getElementById("auth-btn");
   if (!btn) return;
 
-  btn.classList.add("login-btn"); // ✅ ALWAYS green pill
+  btn.classList.add("login-btn"); 
 
   if (!logged) {
     btn.textContent = "Log In";
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   try {
     const res = await fetch('/api/cookies/consent', {
-      credentials: 'include' // ✅ REQUIRED
+      credentials: 'include' 
     });
 
     const data = await res.json();

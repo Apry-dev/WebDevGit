@@ -28,7 +28,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // 2️⃣ If user already artisan → redirect away
   try {
     const artisanRes = await fetch("/api/artisans/me", {
       headers: {
@@ -101,10 +100,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
-      // ✅ Persist artisan role
       localStorage.setItem("isArtisan", "true");
 
-      // ✅ Redirect to dashboard
       window.location.href = "artisan-dashboard.html";
     } catch (err) {
       document.getElementById("join-feedback").textContent =

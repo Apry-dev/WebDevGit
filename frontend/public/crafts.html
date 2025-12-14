@@ -184,7 +184,6 @@
 <script src="crafts.js"></script>
 
 <script>
-  // Hide "My Orders" button if user is not logged in
   if (!localStorage.getItem('token')) {
     document.querySelector('.my-orders-btn')?.remove();
   }

@@ -55,7 +55,6 @@ async function setupArtisanNavbar() {
 
       artisans = await res.json();
 
-      // Load user's favourites (if logged in)
       let favSet = new Set();
       const token = localStorage.getItem('token');
 

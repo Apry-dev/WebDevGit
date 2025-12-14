@@ -71,7 +71,7 @@ async function listMyOrders(req, res, next) {
         o.created_at,
         p.name AS product_name,
         oi.quantity,
-        a.title AS artisan_name
+        a.name AS artisan_name
       FROM orders o
       JOIN order_items oi ON o.id = oi.order_id
       JOIN products p ON oi.product_id = p.id
@@ -147,10 +147,10 @@ async function listArtisanOrders(req, res, next) {
     const [rows] = await db.query(`
       SELECT
         o.id,
-        o.status,
         o.total,
+        o.status,
         o.created_at,
-        u.username AS customer_name,
+        u.email AS customer_email,
         p.name AS product_name,
         oi.quantity
       FROM orders o

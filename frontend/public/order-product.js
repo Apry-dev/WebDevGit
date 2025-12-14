@@ -1,57 +1,57 @@
+// order-product.js — FINAL
+
 document.addEventListener("DOMContentLoaded", async () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    window.location.href = "login.html?next=" + window.location.pathname + window.location.search;
+    return;
+  }
+
   const params = new URLSearchParams(window.location.search);
   const productId = params.get("productId");
 
-  const token = localStorage.getItem("token");
-
   if (!productId) {
-    document.body.innerHTML = "<p>Invalid product.</p>";
+    alert("Missing product ID");
     return;
   }
 
-  if (!token) {
-    window.location.href = `login.html?next=order-product.html?productId=${productId}`;
-    return;
-  }
+  const form = document.getElementById("order-form");
+  const quantityInput = document.getElementById("quantity");
 
-  let product;
-
-  /* ================= LOAD PRODUCT ================= */
-  try {
-    const res = await fetch(`/api/products/${productId}`);
-    if (!res.ok) throw new Error();
-    product = await res.json();
-  } catch {
-    document.body.innerHTML = "<p>Product not found.</p>";
-    return;
-  }
-
-  document.getElementById("product-info").innerHTML = `
-    <p><strong>${product.name}</strong></p>
-    <p>${product.description || ""}</p>
-    <p><strong>Price:</strong> ${product.price} RON</p>
-  `;
-
-  /* ================= SUBMIT ORDER ================= */
-  document.getElementById("order-form").addEventListener("submit", async e => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const quantity = Number(document.getElementById("quantity").value);
-
-    const res = await fetch("/api/orders", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({ productId, quantity })
-    });
-
-    if (!res.ok) {
-      alert("Failed to place order");
+    const quantity = Number(quantityInput.value);
+    if (quantity < 1) {
+      alert("Invalid quantity");
       return;
     }
 
-    window.location.href = "orders.html";
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          productId,
+          quantity
+        })
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        alert(err.msg || "Failed to place order");
+        return;
+      }
+
+      // ✅ SUCCESS → redirect
+      window.location.href = "orders.html";
+
+    } catch (err) {
+      console.error(err);
+      alert("Network error while placing order");
+    }
   });
 });

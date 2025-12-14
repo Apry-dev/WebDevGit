@@ -1,89 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
   <title>My Orders — Tradition Connect</title>
 
-  <link rel="stylesheet" href="styles/style.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
-
-  <style>
-    body {
-      background: linear-gradient(180deg, #faf8f4 0%, #f4f1e8 100%);
-      font-family: "Inter", sans-serif;
-    }
-
-    .orders-container {
-      max-width: 1000px;
-      margin: 3.5rem auto;
-      padding: 0 1rem;
-    }
-
-    h1 {
-      text-align: center;
-      font-family: "Playfair Display", serif;
-      font-size: 2.4rem;
-      margin-bottom: 2.5rem;
-    }
-
-    .order-card {
-      background: #fff;
-      border-radius: 18px;
-      padding: 1.8rem;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-      margin-bottom: 1.6rem;
-    }
-
-    .order-meta {
-      font-size: 0.95rem;
-      color: #444;
-      line-height: 1.6;
-    }
-
-    .status {
-      display: inline-block;
-      margin-top: 0.6rem;
-      padding: 0.3rem 0.9rem;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      text-transform: capitalize;
-    }
-
-    .status.pending { background: #fff3cd; color: #856404; }
-    .status.accepted { background: #d4edda; color: #155724; }
-    .status.shipped { background: #d1ecf1; color: #0c5460; }
-    .status.cancelled { background: #f8d7da; color: #721c24; }
-
-    .order-actions {
-      margin-top: 1rem;
-    }
-
-    .cancel-btn {
-      padding: 0.45rem 1rem;
-      border-radius: 999px;
-      border: none;
-      background: #b33;
-      color: #fff;
-      font-size: 0.85rem;
-      cursor: pointer;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 3rem;
-      background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-      color: #666;
-    }
-  </style>
+  <link rel="stylesheet" href="styles/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Inter&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<!-- ===================== NAVBAR ===================== -->
 <header class="navbar">
   <div class="logo">Tradition<br>Connect</div>
 
@@ -91,19 +17,19 @@
     <span></span><span></span><span></span>
   </div>
 
-  <!-- NAVBAR IS JS-CONTROLLED -->
   <ul class="nav-links" id="nav-links">
-    <!-- AUTH PLACEHOLDER (required by script.js) -->
     <li class="auth-slot">
       <a id="auth-btn" href="login.html">Log In</a>
     </li>
   </ul>
 </header>
 
-<!-- ===================== CONTENT ===================== -->
-<main class="orders-container">
-  <h1>My Orders</h1>
-  <div id="orders">Loading orders…</div>
+<main style="max-width:900px;margin:4rem auto;padding:0 1rem;">
+  <h1 style="text-align:center;font-family:'Playfair Display',serif;">
+    My Orders
+  </h1>
+
+  <div id="orders-list" style="margin-top:2rem;"></div>
 </main>
 
 <script src="script.js"></script>

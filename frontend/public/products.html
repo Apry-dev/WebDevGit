@@ -8,11 +8,11 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
-  <!-- Styles -->
+  <!-- Global styles -->
   <link rel="stylesheet" href="styles/style.css" />
 </head>
 
-<body>
+<body style="font-family:'Inter', sans-serif; background:#faf8f4;">
 
 <!-- ================= NAVBAR ================= -->
 <header class="navbar">
@@ -22,48 +22,91 @@
     <span></span><span></span><span></span>
   </div>
 
-  <!-- NAVBAR IS JS-CONTROLLED -->
   <ul class="nav-links" id="nav-links">
-    <!-- AUTH PLACEHOLDER (required by script.js) -->
     <li class="auth-slot">
       <a id="auth-btn" href="login.html">Log In</a>
     </li>
   </ul>
 </header>
 
-<!-- ================= MAIN CONTENT ================= -->
-<main class="content-wrap" style="max-width: 1000px; margin: 4rem auto; padding: 0 1rem;">
-
-  <h1 style="text-align:center; font-family:'Playfair Display', serif;">
-    Explore Handcrafted Products
+<!-- ================= HERO ================= -->
+<section style="
+  background:linear-gradient(180deg,#f3f1e6,#faf8f4);
+  padding:4rem 1rem 3rem;
+  text-align:center;
+">
+  <h1 style="
+    font-family:'Playfair Display',serif;
+    font-size:2.6rem;
+    margin-bottom:0.8rem;
+  ">
+    Handcrafted Products
   </h1>
 
-  <p style="text-align:center; max-width:600px; margin:1rem auto 2rem;">
-    Discover authentic, handmade products created by skilled Romanian artisans.
-    Each item reflects tradition, care, and cultural heritage.
+  <p style="
+    max-width:640px;
+    margin:0 auto;
+    color:#555;
+    font-size:1rem;
+  ">
+    Discover authentic, handmade products created by Romanian artisans.
+    Each piece carries tradition, craftsmanship, and care.
   </p>
 
-  <!-- Search -->
-  <div class="search-bar" style="display:flex; gap:0.5rem; max-width:600px; margin:0 auto 2.5rem;">
+  <!-- SEARCH -->
+  <div style="
+    max-width:520px;
+    margin:2.2rem auto 0;
+    display:flex;
+    gap:0.6rem;
+    background:#fff;
+    padding:0.6rem;
+    border-radius:14px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  ">
     <input
       id="q"
       type="text"
       placeholder="Search products..."
-      style="flex:1; padding:0.7rem 1rem; border-radius:8px; border:1px solid #ccc;"
+      style="
+        flex:1;
+        border:none;
+        outline:none;
+        padding:0.7rem 0.9rem;
+        font-size:0.95rem;
+      "
     />
     <button
       id="search"
-      style="padding:0.7rem 1.5rem; background:#556B2F; color:white; border:none; border-radius:8px; cursor:pointer;"
+      style="
+        padding:0.6rem 1.4rem;
+        border:none;
+        border-radius:10px;
+        background:#556B2F;
+        color:#fff;
+        cursor:pointer;
+        font-size:0.9rem;
+      "
     >
       Search
     </button>
   </div>
+</section>
 
-  <!-- Results -->
+<!-- ================= PRODUCTS GRID ================= -->
+<main style="
+  max-width:1100px;
+  margin:3rem auto;
+  padding:0 1rem;
+">
+
   <div
     id="results"
-    class="product-grid"
-    style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:1.5rem;"
+    style="
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:1.6rem;
+    "
   ></div>
 
 </main>

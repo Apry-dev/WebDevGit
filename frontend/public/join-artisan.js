@@ -4,13 +4,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ===================================================
   const token = localStorage.getItem("token");
 
-  // Hard stop if no token at all
   if (!token) {
-    window.location.replace("login.html?next=join-artisan.html");
+    window.location.href = "login.html?next=join-artisan.html";
     return;
   }
 
-  // Validate token with backend
+  // 1️⃣ Verify token with backend
   try {
     const authRes = await fetch("/api/auth/me", {
       headers: {
@@ -21,18 +20,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!authRes.ok) {
       localStorage.removeItem("token");
       localStorage.removeItem("isArtisan");
-      window.location.replace("login.html?next=join-artisan.html");
+      window.location.href = "login.html?next=join-artisan.html";
       return;
     }
   } catch (err) {
-    console.error("Auth check failed:", err);
-    window.location.replace("login.html?next=join-artisan.html");
+    window.location.href = "login.html?next=join-artisan.html";
     return;
   }
 
-  // ===================================================
-  // ARTISAN GUARD — REDIRECT IF ALREADY ARTISAN
-  // ===================================================
+  // 2️⃣ If user already artisan → redirect away
   try {
     const artisanRes = await fetch("/api/artisans/me", {
       headers: {
@@ -43,14 +39,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (artisanRes.ok) {
       const artisan = await artisanRes.json();
       if (artisan) {
-        // Already artisan → dashboard
-        window.location.replace("artisan-dashboard.html");
+        window.location.href = "artisan-dashboard.html";
         return;
       }
     }
-  } catch (err) {
-    // silent fail — allow join flow
-  }
+  } catch {}
 
   // ===================================================
   // CRAFT ICON PREVIEW
@@ -82,10 +75,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const street = document.getElementById("street").value.trim();
     const number = document.getElementById("number").value.trim();
     const city = document.getElementById("city").value.trim();
-    const feedback = document.getElementById("join-feedback");
 
     if (!title || !craft || !street || !number || !city) {
-      feedback.textContent = "Please fill in all fields.";
+      alert("Please fill in all fields.");
       return;
     }
 
@@ -96,7 +88,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({ title, craft, address })
       });
@@ -104,20 +96,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        feedback.textContent =
+        document.getElementById("join-feedback").textContent =
           "Failed: " + (data.msg || "Unable to register artisan");
         return;
       }
 
-      // Persist role locally (UX optimization only)
+      // ✅ Persist artisan role
       localStorage.setItem("isArtisan", "true");
 
-      // Redirect to dashboard
-      window.location.replace("artisan-dashboard.html");
-
+      // ✅ Redirect to dashboard
+      window.location.href = "artisan-dashboard.html";
     } catch (err) {
-      console.error("Network error:", err);
-      feedback.textContent = "Network error. Please try again.";
+      document.getElementById("join-feedback").textContent =
+        "Network error. Please try again.";
     }
   });
 });

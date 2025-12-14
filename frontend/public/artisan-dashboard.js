@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const token = localStorage.getItem('token');
+
+  // ================= AUTH GUARD =================
   if (!token) {
     window.location.href = 'login.html?next=artisan-dashboard.html';
     return;
@@ -7,97 +9,171 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const noArtisan = document.getElementById('no-artisan');
   const panel = document.getElementById('dashboard-panel');
+  const productList = document.getElementById('product-list');
 
-  let artisan;
+  let artisanId = null;
+  let myProducts = [];
 
   // ================= LOAD ARTISAN =================
   try {
     const res = await fetch('/api/artisans/me', {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     });
 
-    if (!res.ok) throw new Error();
-    artisan = await res.json();
-  } catch {
+    if (!res.ok) {
+      throw new Error('User is not an artisan');
+    }
+
+    const artisan = await res.json();
+
+    // 🔒 HARD CONTRACT — NO FALLBACKS
+    if (!artisan.id) {
+      throw new Error('Invalid artisan payload: missing id');
+    }
+
+    artisanId = Number(artisan.id);
+    console.log('✅ Artisan loaded, artisanId =', artisanId);
+
+    panel.style.display = 'block';
+
+    // ================= PREFILL PROFILE =================
+    const titleEl = document.getElementById('title');
+    const craftEl = document.getElementById('craft');
+    const addressEl = document.getElementById('address');
+    const bioEl = document.getElementById('bio');
+
+    if (titleEl) titleEl.value = artisan.title || '';
+    if (craftEl) craftEl.value = artisan.craft || '';
+    if (addressEl) addressEl.value = artisan.location || '';
+    if (bioEl) bioEl.value = artisan.bio || '';
+
+  } catch (err) {
+    console.error('❌ Artisan check failed:', err);
     noArtisan.style.display = 'block';
     return;
   }
 
-  panel.style.display = 'block';
-
-  // ================= PREFILL =================
-  const titleEl = document.getElementById('title');
-  const craftEl = document.getElementById('craft');
-  const addressEl = document.getElementById('address');
-  const bioEl = document.getElementById('bio');
-
-  titleEl.value = artisan.title || '';
-  craftEl.value = artisan.craft || '';
-  addressEl.value = artisan.location || '';
-  bioEl.value = artisan.bio || '';
-
   // ================= SAVE PROFILE =================
-  document.getElementById('save-profile').addEventListener('click', async () => {
-    const payload = {
-      title: titleEl.value.trim(),
-      craft: craftEl.value.trim(),
-      address: addressEl.value.trim(),
-      bio: bioEl.value.trim()
-    };
+  const saveBtn = document.getElementById('save-profile');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', async () => {
+      const payload = {
+        title: document.getElementById('title')?.value.trim(),
+        craft: document.getElementById('craft')?.value.trim(),
+        address: document.getElementById('address')?.value.trim(),
+        bio: document.getElementById('bio')?.value.trim()
+      };
 
-    const res = await fetch(`/api/artisans/${artisan.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify(payload)
+      try {
+        const res = await fetch(`/api/artisans/${artisanId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        alert(res.ok ? 'Profile updated successfully' : 'Failed to update profile');
+      } catch (err) {
+        console.error(err);
+        alert('Network error while updating profile');
+      }
     });
-
-    alert(res.ok ? 'Profile updated successfully' : 'Failed to update profile');
-  });
+  }
 
   // ================= LOAD PRODUCTS =================
-  const productList = document.getElementById('product-list');
+  async function loadProducts() {
+    try {
+      const res = await fetch(`/api/products?artisanId=${artisanId}`);
+      if (!res.ok) throw new Error('Failed to load products');
 
-  const pRes = await fetch(`/api/products?artisanId=${artisan.id}`);
-  const products = pRes.ok ? await pRes.json() : [];
+      myProducts = await res.json();
+      renderProducts();
 
-  if (!products.length) {
-    productList.innerHTML = `
-      <div class="empty-products">
-        <p>No products yet.</p>
-        <p>Add your first product to showcase your craft.</p>
-      </div>
-    `;
-  } else {
-    productList.innerHTML = products.map(p => `
-      <div class="product-card">
-        <div>
-          <strong>${p.name}</strong><br>
-          ${p.price} RON
+    } catch (err) {
+      console.error('❌ Product load failed:', err);
+      productList.innerHTML = '<p>Error loading products.</p>';
+    }
+  }
+
+  // ================= RENDER PRODUCTS =================
+  function renderProducts() {
+    productList.innerHTML = '';
+
+    if (!myProducts.length) {
+      productList.innerHTML = `
+        <div class="empty-products">
+          <p>No products yet.</p>
+          <p>Add your first product to showcase your craft.</p>
         </div>
-        <button class="delete-btn" data-id="${p.id}">Delete</button>
-      </div>
-    `).join('');
+      `;
+      return;
+    }
+
+    myProducts.forEach(product => {
+      const card = document.createElement('div');
+      card.className = 'product-card';
+
+      card.innerHTML = `
+        <div class="product-info">
+          <strong>${product.name}</strong>
+          <p>${product.description || 'Handcrafted product'}</p>
+          <span><strong>€${product.price}</strong></span>
+        </div>
+        <button class="delete-btn" data-id="${product.id}">
+          Delete
+        </button>
+      `;
+
+      productList.appendChild(card);
+    });
+
+    bindDeleteButtons();
   }
 
   // ================= DELETE PRODUCT =================
-  document.querySelectorAll('.delete-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      if (!confirm('Delete this product?')) return;
+  function bindDeleteButtons() {
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (!confirm('Delete this product?')) return;
 
-      const res = await fetch(`/api/products/${btn.dataset.id}`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` }
+        const productId = btn.dataset.id;
+
+        try {
+          const res = await fetch(`/api/products/${productId}`, {
+            method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+
+          if (!res.ok) {
+            alert('Failed to delete product');
+            return;
+          }
+
+          myProducts = myProducts.filter(p => p.id !== Number(productId));
+          renderProducts();
+
+        } catch (err) {
+          console.error(err);
+          alert('Network error while deleting product');
+        }
       });
-
-      if (res.ok) location.reload();
     });
-  });
+  }
 
   // ================= ADD PRODUCT =================
-  document.getElementById('add-product').onclick = () => {
-    window.location.href = 'add-product.html';
-  };
+  const addProductBtn = document.getElementById('add-product');
+  if (addProductBtn) {
+    addProductBtn.addEventListener('click', () => {
+      window.location.href = 'add-product.html';
+    });
+  }
+
+  // ================= INIT =================
+  loadProducts();
 });

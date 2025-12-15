@@ -75,7 +75,7 @@ SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'dfed1f4a-d763-11f0-aa7f-4986c54818a0:1-
 ----------------------------------------
 APPLICATION CONFIGURATION
 ----------------------------------------
-
+If an .env file doesn't exist, then 
 Create a `.env` file in the project root based on `env.example`.
 
 Required environment variables:

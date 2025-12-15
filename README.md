@@ -62,6 +62,15 @@ Alternatively, using terminal:
 
 mysql -u YOUR_USERNAME -p traditionconnect < database_dump.sql
 
+In case the database shows an error, then delete this line from
+all files:
+
+--
+-- GTID state at the beginning of the backup 
+--
+
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'dfed1f4a-d763-11f0-aa7f-4986c54818a0:1-170';
+
 
 ----------------------------------------
 APPLICATION CONFIGURATION
@@ -95,8 +104,8 @@ APPLICATION INSTALLATION
 
 3. Install dependencies:
 
-   npm install
-   install cookies dependencies
+   git pull origin backup-before-merge
+   npm install express dotenv mysql2 jsonwebtoken bcryptjs cookie-parser multer cors
 
 ----------------------------------------
 RUNNING THE APPLICATION
